@@ -96,12 +96,18 @@ class CreateComponentsTriggers extends Migration
         }
     }
 
+    /**
+     * @return void
+     */
     private function deleteMySQLTriggers(): void
     {
         DB::unprepared('DROP TRIGGER IF EXISTS tr_components_cost_insert;');
         DB::unprepared('DROP TRIGGER IF EXISTS tr_components_cost_update;');
     }
 
+    /**
+     * @return void
+     */
     private function deletePgSQLTriggers(): void
     {
         DB::unprepared('DROP TRIGGER IF EXISTS tr_components_cost_insert ON components;');

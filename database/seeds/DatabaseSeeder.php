@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CreateRootComponentCategory::class);
+        $this->call([
+            ComponentCategoriesSeeder::class,
+            PermissionSeeder::class,
+        ]);
     }
 }

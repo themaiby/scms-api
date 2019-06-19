@@ -22,16 +22,29 @@ class CreateComponents extends Migration
         Schema::create('components', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('component_category_id')->index();
+            $table->unsignedBigInteger('user_id')->index();
 
             $table->string('title');
             $table->string('vendor_code');
 
             $table->unsignedInteger('quantity')->default(0);
             $table->float('price')->default(0.00);
-
             $table->float('cost')->nullable(); // Calculates with DB triggers
 
+            $table->boolean('active')->default(true);
             $table->timestamps();
+        });
+
+
+        Schema::table('components', static function (Blueprint $table) {
+            $table->foreign('component_category_id')
+                ->references('id')
+                ->on('component_categories')
+                ->onDelete('cascade');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

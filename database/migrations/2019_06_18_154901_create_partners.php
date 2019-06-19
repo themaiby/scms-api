@@ -28,6 +28,21 @@ class CreatePartners extends Migration
                 ->on('users')
                 ->onDelete('cascade');
         });
+
+        Schema::create('partner_contacts', static function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('partner_id')->index();
+            $table->string('title');
+            $table->string('value');
+            $table->timestamps();
+        });
+
+        Schema::table('partner_contacts', static function (Blueprint $table) {
+            $table->foreign('partner_id')
+                ->references('id')
+                ->on('vendors')
+                ->onDelete('cascade');
+        });
     }
 
     /**

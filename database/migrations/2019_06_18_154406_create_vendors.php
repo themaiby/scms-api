@@ -28,6 +28,21 @@ class CreateVendors extends Migration
                 ->on('users')
                 ->onDelete('cascade');
         });
+
+        Schema::create('vendor_contacts', static function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('vendor_id')->index();
+            $table->string('title');
+            $table->string('value');
+            $table->timestamps();
+        });
+
+        Schema::table('vendor_contacts', static function (Blueprint $table) {
+            $table->foreign('vendor_id')
+                ->references('id')
+                ->on('vendors')
+                ->onDelete('cascade');
+        });
     }
 
     /**
