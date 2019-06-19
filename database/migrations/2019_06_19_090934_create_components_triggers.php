@@ -20,6 +20,7 @@ class CreateComponentsTriggers extends Migration
      * Run the migrations.
      *
      * @return void
+     * @throws Exception
      */
     public function up(): void
     {
@@ -27,6 +28,8 @@ class CreateComponentsTriggers extends Migration
             $this->createMySQLTriggers();
         } elseif ($this->connectionName === 'pgsql') {
             $this->createPgSQLTriggers();
+        } else {
+            throw new RuntimeException('Is supported only MySQL and PostgreSQL databases');
         }
     }
 
@@ -88,6 +91,8 @@ class CreateComponentsTriggers extends Migration
             $this->deleteMySQLTriggers();
         } elseif ($this->connectionName === 'pgsql') {
             $this->deletePgSQLTriggers();
+        } else {
+            throw new RuntimeException('Is supported only MySQL and PostgreSQL databases');
         }
     }
 
