@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Config\Repository;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -25,6 +26,7 @@ class CreateComponentsTriggers extends Migration
     /**
      * @param string $fileName
      * @return string
+     * @throws FileNotFoundException
      */
     private function getMySQLFile(string $fileName): string
     {
@@ -34,6 +36,7 @@ class CreateComponentsTriggers extends Migration
     /**
      * @param string $fileName
      * @return string
+     * @throws FileNotFoundException
      */
     private function getPgSQLFile(string $fileName): string
     {
