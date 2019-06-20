@@ -46,9 +46,9 @@ class User extends Authenticatable
     use HasPermissions;
 
     /**
-     * todo: check hard variables
+     * @var string
      */
-    public $id;
+    protected $guard_name = 'api';
 
     /**
      * @var array

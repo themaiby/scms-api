@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\PermissionType;
+use App\Enums\RoleType;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
@@ -19,7 +20,7 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         /** Global admin Role (has all permissions) */
-        Role::create(['name' => 'administrator']);
+        Role::create(['name' => RoleType::ADMINISTRATOR]);
 
         $permissions = PermissionType::getValues();
 
@@ -27,7 +28,7 @@ class PermissionSeeder extends Seeder
         foreach ($permissions as $permission) {
             $permissionsReadyToInsert[] = [
                 'name' => $permission,
-                'guard_name' => 'web',
+                'guard_name' => 'api',
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
