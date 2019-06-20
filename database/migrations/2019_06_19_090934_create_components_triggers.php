@@ -77,6 +77,9 @@ class CreateComponentsTriggers extends Migration
         ');
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     private function createPgSQLTriggers(): void
     {
         // Defining functions
