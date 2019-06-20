@@ -4,6 +4,9 @@ use Illuminate\Config\Repository;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class CreateComponentsTriggers
+ */
 class CreateComponentsTriggers extends Migration
 {
     /**
@@ -11,9 +14,30 @@ class CreateComponentsTriggers extends Migration
      */
     private $connectionName;
 
+    private $pathToPgSQLFiles = './database/migrations/SQL/PostgreSQL/';
+    private $pathToMySQLFiles = './database/migrations/SQL/MySQL/';
+
     public function __construct()
     {
         $this->connectionName = config('database.default');
+    }
+
+    /**
+     * @param string $fileName
+     * @return string
+     */
+    private function getMySQLFile(string $fileName): string
+    {
+        return File::get($this->pathToMySQLFiles . $fileName . '.sql');
+    }
+
+    /**
+     * @param string $fileName
+     * @return string
+     */
+    private function getPgSQLFile(string $fileName): string
+    {
+        return File::get($this->pathToPgSQLFiles . $fileName . '.sql');
     }
 
     /**
@@ -35,14 +59,14 @@ class CreateComponentsTriggers extends Migration
 
     private function createMySQLTriggers(): void
     {
-        /** onInsert */
+        /** onInsert - each COMPONENT cost */
         DB::unprepared('
             CREATE TRIGGER tr_components_cost_insert 
             BEFORE INSERT ON components
             FOR EACH ROW SET new.cost = new.quantity * new.price
         ');
 
-        /** onUpdate */
+        /** onUpdate - each COMPONENT cost */
         DB::unprepared('
             CREATE TRIGGER tr_components_cost_update 
             BEFORE UPDATE ON components
@@ -52,32 +76,13 @@ class CreateComponentsTriggers extends Migration
 
     private function createPgSQLTriggers(): void
     {
-        /** Trigger function */
-        DB::unprepared('
-            CREATE OR REPLACE FUNCTION calculate_components_cost()
-              RETURNS trigger AS
-            $BODY$
-                BEGIN
-                   NEW.cost := NEW.quantity * NEW.price;
-               RETURN NEW;
-            END;
-            $BODY$
-            LANGUAGE plpgsql;
-        ');
+        // Defining functions
+        DB::unprepared($this->getPgSQLFile('FN_CalculateComponentsCost'));
+        DB::unprepared($this->getPgSQLFile('FN_CalculateVendorSummary'));
 
-        /** onInsert */
-        DB::unprepared('
-            CREATE TRIGGER tr_components_cost_insert 
-            BEFORE INSERT ON components
-            FOR EACH ROW EXECUTE PROCEDURE calculate_components_cost();
-        ');
-
-        /** onUpdate */
-        DB::unprepared('
-            CREATE TRIGGER tr_components_cost_update
-            BEFORE UPDATE ON components
-            FOR EACH ROW EXECUTE PROCEDURE calculate_components_cost();
-        ');
+        // Setting triggers
+        DB::unprepared($this->getPgSQLFile('TR_ComponentsCostCalculating'));
+        DB::unprepared($this->getPgSQLFile('TR_VendorsComponentSummaryCalculating'));
     }
 
     /**
@@ -107,6 +112,7 @@ class CreateComponentsTriggers extends Migration
 
     /**
      * @return void
+     * todo: move to SQL
      */
     private function deletePgSQLTriggers(): void
     {

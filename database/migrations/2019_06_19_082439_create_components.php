@@ -23,6 +23,7 @@ class CreateComponents extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('component_category_id')->index();
             $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('vendor_id')->index();
 
             $table->string('title');
             $table->string('vendor_code');
@@ -44,6 +45,10 @@ class CreateComponents extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('cascade');
+            $table->foreign('vendor_id')
+                ->references('id')
+                ->on('vendors')
                 ->onDelete('cascade');
         });
     }

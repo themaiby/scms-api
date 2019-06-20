@@ -15,9 +15,11 @@ class CreateVendors extends Migration
     {
         Schema::create('vendors', static function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->index();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('components_count')->default(0);
+            $table->float('components_cost')->default(0.00);
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
