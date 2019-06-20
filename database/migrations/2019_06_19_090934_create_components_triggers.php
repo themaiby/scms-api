@@ -51,30 +51,24 @@ class CreateComponentsTriggers extends Migration
      */
     public function up(): void
     {
-        if ($this->connectionName === 'mysql') {
-            $this->createMySQLTriggers();
-        } elseif ($this->connectionName === 'pgsql') {
-            $this->createPgSQLTriggers();
-        } else {
-            throw new RuntimeException('Is supported only MySQL and PostgreSQL databases');
+        switch ($this->connectionName) {
+            case 'mysql':
+                $this->createMySQLTriggers();
+                break;
+            case 'pgsql':
+                $this->createPgSQLTriggers();
+                break;
+            default:
+                throw new RuntimeException('Is supported only MySQL and PostgreSQL databases');
         }
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     private function createMySQLTriggers(): void
     {
-        /** onInsert - each COMPONENT cost */
-        DB::unprepared('
-            CREATE TRIGGER tr_components_cost_insert 
-            BEFORE INSERT ON components
-            FOR EACH ROW SET new.cost = new.quantity * new.price
-        ');
-
-        /** onUpdate - each COMPONENT cost */
-        DB::unprepared('
-            CREATE TRIGGER tr_components_cost_update 
-            BEFORE UPDATE ON components
-            FOR EACH ROW SET new.cost = new.quantity * new.price
-        ');
+        DB::unprepared($this->getMySQLFile('TR_ComponentsCostCalculating'));
     }
 
     /**
