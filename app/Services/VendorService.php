@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Vendor;
+use App\Traits\FieldSelectable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
@@ -11,11 +12,17 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
  */
 class VendorService
 {
+    use FieldSelectable;
+
     /**
      * @var PaginationService
      */
     private $paginationService;
 
+    /**
+     * VendorService constructor.
+     * @param PaginationService $paginationService
+     */
     public function __construct(PaginationService $paginationService)
     {
         $this->paginationService = $paginationService;
@@ -24,9 +31,11 @@ class VendorService
     /**
      * @return LengthAwarePaginator
      */
-    public function getPaginatedList(): LengthAwarePaginator
+    public function getList(): LengthAwarePaginator
     {
         $perPage = $this->paginationService->getPerPage();
-        return Vendor::paginate($perPage, ['id', 'name', 'description', 'components_cost', 'components_count', 'created_at']);
+        $availableFields = ['id', 'name', 'description', 'components_cost', 'components_count', 'created_at'];
+
+        return Vendor::paginate($perPage, $this->getRequestedFields($availableFields));
     }
 }

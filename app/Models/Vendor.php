@@ -32,13 +32,22 @@ use Illuminate\Support\Carbon;
  * @mixin Eloquent
  * @property int $components_count
  * @property float $components_cost
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vendor whereComponentsCost($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vendor whereComponentsCount($value)
+ * @method static Builder|Vendor whereComponentsCost($value)
+ * @method static Builder|Vendor whereComponentsCount($value)
  */
 class Vendor extends Model
 {
     protected $table = 'vendors';
-    protected $fillable = ['user_id', 'name', 'description', 'components_count', 'components_cost', 'active', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'user_id',
+        'name',
+        'description',
+        'components_count',
+        'components_cost',
+        'active',
+        'created_at',
+        'updated_at'
+    ];
 
     /**
      * @return BelongsTo

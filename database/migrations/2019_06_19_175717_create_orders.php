@@ -101,6 +101,11 @@ class CreateOrders extends Migration
             $table->unsignedBigInteger('quantity');
             $table->timestamps();
         });
+
+        Schema::table('order_components', static function (Blueprint $table) {
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
+        });
     }
 
     /**

@@ -26,7 +26,7 @@ class VendorsController extends Controller
      */
     public function getList(): VendorCollectionResource
     {
-        $vendors = $this->vendorService->getPaginatedList();
+        $vendors = $this->vendorService->getList();
         return new VendorCollectionResource($vendors);
     }
 }
