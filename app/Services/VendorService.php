@@ -27,6 +27,6 @@ class VendorService
     public function getPaginatedList(): LengthAwarePaginator
     {
         $perPage = $this->paginationService->getPerPage();
-        return Vendor::paginate($perPage, ['id', 'name', 'description', 'created_at']);
+        return Vendor::paginate($perPage, ['id', 'name', 'description', 'components_cost', 'components_count', 'created_at']);
     }
 }

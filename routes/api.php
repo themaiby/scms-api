@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,4 +11,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/vendors', 'VendorsController@list');
+Route::get('/vendors', 'VendorsController@getList');

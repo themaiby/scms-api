@@ -30,10 +30,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Vendor whereUpdatedAt($value)
  * @method static Builder|Vendor whereUserId($value)
  * @mixin Eloquent
+ * @property int $components_count
+ * @property float $components_cost
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vendor whereComponentsCost($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vendor whereComponentsCount($value)
  */
 class Vendor extends Model
 {
     protected $table = 'vendors';
+    protected $fillable = ['user_id', 'name', 'description', 'components_count', 'components_cost', 'active', 'created_at', 'updated_at'];
 
     /**
      * @return BelongsTo

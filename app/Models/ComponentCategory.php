@@ -2,25 +2,39 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\ComponentCategory
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory query()
- * @mixin \Eloquent
+ * @method static Builder|ComponentCategory newModelQuery()
+ * @method static Builder|ComponentCategory newQuery()
+ * @method static Builder|ComponentCategory query()
+ * @mixin Eloquent
  * @property int $id
  * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory whereUpdatedAt($value)
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|ComponentCategory whereCreatedAt($value)
+ * @method static Builder|ComponentCategory whereId($value)
+ * @method static Builder|ComponentCategory whereName($value)
+ * @method static Builder|ComponentCategory whereUpdatedAt($value)
+ * @property-read Collection|Component[] $component
  */
 class ComponentCategory extends Model
 {
     protected $table = 'component_categories';
+
+    /**
+     * @return HasMany
+     */
+    public function component(): HasMany
+    {
+        return $this->hasMany(Component::class);
+    }
 }
