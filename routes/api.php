@@ -11,4 +11,7 @@
 |
 */
 
-Route::get('/vendors', 'VendorsController@getList');
+Route::group(['prefix' => 'vendors'], static function () {
+    Route::get('/', 'VendorsController@getList');
+    Route::get('/{vendor}', 'VendorsController@get')->where(['vendor' => '[0-9]+']);
+});

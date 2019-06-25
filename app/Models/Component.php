@@ -55,7 +55,7 @@ class Component extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(ComponentCategory::class);
+        return $this->belongsTo(ComponentCategory::class, 'component_category_id');
     }
 
     /**

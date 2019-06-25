@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\VendorCollectionResource;
+use App\Http\Resources\VendorResource;
+use App\Models\Vendor;
 use App\Services\VendorService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class VendorsController extends Controller
 {
@@ -22,11 +24,21 @@ class VendorsController extends Controller
     }
 
     /**
-     * @return VendorCollectionResource
+     * @return AnonymousResourceCollection
      */
-    public function getList(): VendorCollectionResource
+    public function getList(): AnonymousResourceCollection
     {
         $vendors = $this->vendorService->getList();
-        return new VendorCollectionResource($vendors);
+        return VendorResource::collection($vendors);
+    }
+
+    /**
+     * @param Vendor $vendor
+     * @return VendorResource
+     */
+    public function get(Vendor $vendor): VendorResource
+    {
+        $vendor->load(['user', 'components', 'components.category']);
+        return new VendorResource($vendor);
     }
 }
