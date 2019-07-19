@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateVendorRequest;
+use App\Http\Requests\VendorCreateRequest;
+use App\Http\Requests\VendorUpdateRequest;
 use App\Http\Resources\CollectionResponse;
 use App\Http\Resources\ItemResponse;
 use App\Http\Resources\VendorResource;
@@ -51,13 +52,24 @@ class VendorsController extends Controller
     }
 
     /**
-     * @param CreateVendorRequest $vendorRequest
+     * @param VendorCreateRequest $vendorRequest
      * @return ItemResponse
      */
-    public function create(CreateVendorRequest $vendorRequest): ItemResponse
+    public function create(VendorCreateRequest $vendorRequest): ItemResponse
     {
         $vendor = Vendor::create($vendorRequest->all());
         return new ItemResponse($vendor);
+    }
+
+    /**
+     * @param Vendor $vendor
+     * @param VendorUpdateRequest $request
+     * @return ItemResponse
+     */
+    public function update(Vendor $vendor, VendorUpdateRequest $request): ItemResponse
+    {
+        $vendor->update($request->all());
+        return $this->get($vendor);
     }
 
     /**

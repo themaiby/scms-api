@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateVendorContactRequest extends FormRequest
+class VendorContactCreateRequest extends FormRequest
 {
     public const FIELD_CONTACT_TITLE = 'title';
     public const FIELD_CONTACT_VALUE = 'value';

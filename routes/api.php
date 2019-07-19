@@ -14,6 +14,7 @@
 Route::group(['prefix' => 'vendors'], static function () {
     Route::get('/', 'VendorsController@getList');
     Route::get('/{vendor}', 'VendorsController@get')->where(['vendor' => '[0-9]+']);
+    Route::post('/{vendor}', 'VendorsController@update')->where(['vendor' => '[0-9]+']);
 
     Route::prefix('{vendor}/contacts')
         ->where(['vendor' => '[0-9]+'])
