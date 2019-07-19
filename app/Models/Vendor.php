@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -35,20 +36,13 @@ use Illuminate\Support\Carbon;
  * @property float $components_cost
  * @method static Builder|Vendor whereComponentsCost($value)
  * @method static Builder|Vendor whereComponentsCount($value)
+ * @property-read Collection|Component[] $components
+ * @property-read Collection|VendorContact[] $contacts
  */
 class Vendor extends Model
 {
     protected $table = 'vendors';
-    protected $fillable = [
-        'user_id',
-        'name',
-        'description',
-        'components_count',
-        'components_cost',
-        'active',
-        'created_at',
-        'updated_at'
-    ];
+    protected $fillable = ['name'];
 
     /**
      * @return BelongsTo
@@ -64,5 +58,13 @@ class Vendor extends Model
     public function components(): HasMany
     {
         return $this->hasMany(Component::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(VendorContact::class);
     }
 }

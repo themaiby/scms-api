@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateVendorRequest;
+use App\Http\Resources\CollectionResponse;
+use App\Http\Resources\ItemResponse;
 use App\Http\Resources\VendorResource;
 use App\Models\Vendor;
 use App\Services\VendorService;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Exception;
 
 class VendorsController extends Controller
 {
@@ -24,21 +27,47 @@ class VendorsController extends Controller
     }
 
     /**
-     * @return AnonymousResourceCollection
+     * @return CollectionResponse
      */
-    public function getList(): AnonymousResourceCollection
+    public function getList(): CollectionResponse
     {
         $vendors = $this->vendorService->getList();
-        return VendorResource::collection($vendors);
+        return new CollectionResponse($vendors);
     }
 
     /**
      * @param Vendor $vendor
-     * @return VendorResource
+     * @return ItemResponse
      */
-    public function get(Vendor $vendor): VendorResource
+    public function get(Vendor $vendor): ItemResponse
     {
-        $vendor->load(['user', 'components', 'components.category']);
-        return new VendorResource($vendor);
+        $vendor->load([
+            'user',
+            'components',
+            'components.category',
+            'contacts'
+        ]);
+        return new ItemResponse($vendor);
+    }
+
+    /**
+     * @param CreateVendorRequest $vendorRequest
+     * @return ItemResponse
+     */
+    public function create(CreateVendorRequest $vendorRequest): ItemResponse
+    {
+        $vendor = Vendor::create($vendorRequest->all());
+        return new ItemResponse($vendor);
+    }
+
+    /**
+     * @param Vendor $vendor
+     * @return ItemResponse
+     * @throws Exception
+     */
+    public function delete(Vendor $vendor): ItemResponse
+    {
+        $vendor->delete();
+        return response();
     }
 }

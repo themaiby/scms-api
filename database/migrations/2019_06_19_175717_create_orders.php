@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatusType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,9 +21,7 @@ class CreateOrders extends Migration
             $table->string('color')->default('primary');
             $table->string('description')->nullable();
 
-            $table->boolean('action_new')->default(false);
-            $table->boolean('action_partner')->default(false);
-            $table->boolean('action_closed')->default(false);
+            $table->enum('status_type', OrderStatusType::getValues());
 
             $table->boolean('active')->default(true);
             $table->timestamps();

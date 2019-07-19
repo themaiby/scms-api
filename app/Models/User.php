@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -38,10 +39,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[] $permissions
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User permission($permissions)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User role($roles, $guard = null)
+ * @property-read Collection|Permission[] $permissions
+ * @property-read Collection|Role[] $roles
+ * @method static Builder|User permission($permissions)
+ * @method static Builder|User role($roles, $guard = null)
  */
 class User extends Authenticatable
 {

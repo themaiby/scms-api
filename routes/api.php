@@ -14,4 +14,10 @@
 Route::group(['prefix' => 'vendors'], static function () {
     Route::get('/', 'VendorsController@getList');
     Route::get('/{vendor}', 'VendorsController@get')->where(['vendor' => '[0-9]+']);
+
+    Route::prefix('{vendor}/contacts')
+        ->where(['vendor' => '[0-9]+'])
+        ->group(static function () {
+            Route::post('/create', 'VendorContactController@create');
+        });
 });
