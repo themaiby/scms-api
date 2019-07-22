@@ -9,7 +9,7 @@ use App\Models\VendorContact;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
-class VendorContactController extends Controller
+class VendorContactsController extends Controller
 {
     /**
      * @param Vendor $vendor

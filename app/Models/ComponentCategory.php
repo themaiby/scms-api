@@ -6,7 +6,9 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -25,10 +27,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ComponentCategory whereName($value)
  * @method static Builder|ComponentCategory whereUpdatedAt($value)
  * @property-read Collection|Component[] $component
+ * @property int|null $parent_id
+ * @property-read \App\Models\ComponentCategory $child
+ * @property-read \App\Models\ComponentCategory|null $parent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory whereParentId($value)
  */
 class ComponentCategory extends Model
 {
     protected $table = 'component_categories';
+    protected $fillable = ['name'];
 
     /**
      * @return HasMany
@@ -36,5 +43,22 @@ class ComponentCategory extends Model
     public function component(): HasMany
     {
         return $this->hasMany(Component::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(__CLASS__, 'parent_id');
+    }
+
+    /**
+     * @return HasOne
+     *
+     */
+    public function child(): HasOne
+    {
+        return $this->hasOne(__CLASS__, 'parent_id');
     }
 }

@@ -36,11 +36,35 @@ Route::prefix('vendors')
 
         Route::prefix('{vendor}/contacts')
             ->group(static function () {
-                Route::post('/create', 'VendorContactController@create')
+                Route::post('/create', 'VendorContactsController@create')
                     ->name('vendors.contacts.create')
                     ->middleware(permissionMiddleware(PermissionType::CREATE_VENDORS()));
-                Route::delete('/{contact}', 'VendorContactController@delete')
+                Route::delete('/{contact}', 'VendorContactsController@delete')
                     ->name('vendor.contacts.delete')
                     ->middleware(permissionMiddleware(PermissionType::DELETE_VENDORS()));
+            });
+    });
+
+Route::prefix('components')
+    ->where(['component' => '[0-9]+', 'componentCategory' => '[0-9]+'])
+    ->group(static function () {
+        Route::get('/', 'ComponentsController@getList')
+            ->name('components.list')
+            ->middleware(permissionMiddleware(PermissionType::SEE_COMPONENTS()));
+        Route::post('/', 'ComponentsController@create')
+            ->name('components.create')
+            ->middleware(permissionMiddleware(PermissionType::CREATE_COMPONENTS()));
+
+        Route::prefix('categories')
+            ->group(static function () {
+                Route::get('/', 'ComponentCategoriesController@getList')
+                    ->name('components.categories.list')
+                    ->middleware(permissionMiddleware(PermissionType::SEE_COMPONENT_CATEGORIES()));
+                Route::post('/', 'ComponentCategoriesController@create')
+                    ->name('components.categories.create')
+                    ->middleware(permissionMiddleware(PermissionType::CREATE_COMPONENT_CATEGORIES()));
+                Route::post('/{componentCategory}', 'ComponentCategoriesController@update')
+                    ->name('components.categories.update')
+                    ->middleware(permissionMiddleware(PermissionType::EDIT_COMPONENT_CATEGORIES()));
             });
     });

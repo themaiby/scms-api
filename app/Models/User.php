@@ -47,6 +47,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static Builder|User permission($permissions)
  * @method static Builder|User role($roles, $guard = null)
  * @property-read Collection|Vendor[] $vendors
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Component[] $components
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -80,6 +81,14 @@ class User extends Authenticatable implements JWTSubject
     public function vendors(): HasMany
     {
         return $this->hasMany(Vendor::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function components(): HasMany
+    {
+        return $this->hasMany(Component::class);
     }
 
     /**

@@ -6,38 +6,70 @@ use BenSampo\Enum\Enum;
 
 /**
  * Class PermissionType
+ *
+ * @method static static SEE_VENDORS()
+ * @method static static EDIT_VENDORS()
+ * @method static static CREATE_VENDORS()
+ * @method static static DELETE_VENDORS()
+ * @method static static SEE_PARTNERS()
+ * @method static static EDIT_PARTNERS()
+ * @method static static CREATE_PARTNERS()
+ * @method static static DELETE_PARTNERS()
+ * @method static static SEE_COMPONENTS()
+ * @method static static EDIT_COMPONENTS()
+ * @method static static CREATE_COMPONENTS()
+ * @method static static DELETE_COMPONENTS()
+ * @method static static SEE_COMPONENT_CATEGORIES()
+ * @method static static EDIT_COMPONENT_CATEGORIES()
+ * @method static static CREATE_COMPONENT_CATEGORIES()
+ * @method static static DELETE_COMPONENT_CATEGORIES()
+ * @method static static SEE_ORDERS()
+ * @method static static EDIT_ORDERS()
+ * @method static static CREATE_ORDERS()
+ * @method static static DELETE_ORDERS()
+ * @method static static SEE_USERS()
+ * @method static static EDIT_USERS()
+ * @method static static CREATE_USERS()
+ * @method static static DELETE_USERS()
+ * @method static static SEE_STATUSES()
+ * @method static static EDIT_STATUSES()
+ * @method static static CREATE_STATUSES()
+ * @method static static DELETE_STATUSES()
+ * @method static static SEE_SETTINGS()
+ * @method static static EDIT_SETTINGS()
+ * @method static static EXPORT_DATA()
  * @package App\Enums
- * @method static static SEE_VENDORS
- * @method static static EDIT_VENDORS
- * @method static static CREATE_VENDORS
- * @method static static DELETE_VENDORS
- * @method static static SEE_PARTNERS
- * @method static static EDIT_PARTNERS
- * @method static static CREATE_PARTNERS
- * @method static static DELETE_PARTNERS
- * @method static static SEE_COMPONENTS
- * @method static static EDIT_COMPONENTS
- * @method static static CREATE_COMPONENTS
- * @method static static DELETE_COMPONENTS
- * @method static static SEE_COMPONENT_CATEGORIES
- * @method static static EDIT_COMPONENT_CATEGORIES
- * @method static static CREATE_COMPONENT_CATEGORIES
- * @method static static DELETE_COMPONENT_CATEGORIES
- * @method static static SEE_ORDERS
- * @method static static EDIT_ORDERS
- * @method static static CREATE_ORDERS
- * @method static static DELETE_ORDERS
- * @method static static SEE_USERS
- * @method static static EDIT_USERS
- * @method static static CREATE_USERS
- * @method static static DELETE_USERS
- * @method static static SEE_STATUSES
- * @method static static EDIT_STATUSES
- * @method static static CREATE_STATUSES
- * @method static static DELETE_STATUSES
- * @method static static SEE_SETTINGS
- * @method static static EDIT_SETTINGS
- * @method static static EXPORT_DATA
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
+ * @method
  */
 final class PermissionType extends Enum
 {

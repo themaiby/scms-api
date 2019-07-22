@@ -25,6 +25,7 @@ class ComponentObserver
      */
     public function created(Component $component): void
     {
+        Component::unsetEventDispatcher();
         $this->componentService->calculateComponentCost($component);
     }
 
@@ -36,6 +37,7 @@ class ComponentObserver
      */
     public function updated(Component $component): void
     {
+        Component::unsetEventDispatcher();
         if (($component->price * $component->quantity) !== $component->cost) {
             $this->componentService->calculateComponentCost($component);
         }
@@ -49,7 +51,7 @@ class ComponentObserver
      * @param Component $component
      * @return void
      */
-    public function deleted(Component $component)
+    public function deleted(Component $component): void
     {
         $this->componentService->calculateVendorSummaryData($component);
     }
@@ -60,7 +62,7 @@ class ComponentObserver
      * @param Component $component
      * @return void
      */
-    public function restored(Component $component)
+    public function restored(Component $component): void
     {
         //
     }
@@ -71,7 +73,7 @@ class ComponentObserver
      * @param Component $component
      * @return void
      */
-    public function forceDeleted(Component $component)
+    public function forceDeleted(Component $component): void
     {
         //
     }

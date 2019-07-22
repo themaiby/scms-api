@@ -15,8 +15,17 @@ class CreateComponents extends Migration
     {
         Schema::create('component_categories', static function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique();
+            $table->string('name');
+            $table->unsignedBigInteger('parent_id')->nullable()->index();
             $table->timestamps();
+        });
+
+        Schema::table('component_categories', static function (Blueprint $table) {
+            $table->unique(['name', 'parent_id']);
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('component_categories')
+                ->onDelete('cascade');
         });
 
         Schema::create('components', static function (Blueprint $table) {

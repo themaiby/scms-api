@@ -21,7 +21,7 @@ class CreateOrders extends Migration
             $table->string('color')->default('primary');
             $table->string('description')->nullable();
 
-            $table->enum('status_type', OrderStatusType::getValues());
+            $table->enum('type', OrderStatusType::getValues());
 
             $table->boolean('active')->default(true);
             $table->timestamps();

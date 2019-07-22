@@ -31,14 +31,7 @@ class AuthController extends Controller
         ]);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(
-                [
-                    'errors' => [
-                        'login' => 'Your account or password is incorrect'
-                    ]
-                ],
-                401
-            );
+            return response()->json(['message' => __('auth.failed')], 401);
         }
 
         return $this->respondWithToken($token);

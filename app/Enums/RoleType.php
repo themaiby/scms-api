@@ -6,8 +6,10 @@ use BenSampo\Enum\Enum;
 
 /**
  * Class RoleType
+ *
+ * @method static static ADMINISTRATOR()
  * @package App\Enums
- * @method static static ADMINISTRATOR
+ * @method
  */
 final class RoleType extends Enum
 {

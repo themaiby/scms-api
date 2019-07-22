@@ -45,10 +45,7 @@ use Illuminate\Support\Carbon;
 class Component extends Model
 {
     protected $table = 'components';
-    protected $fillable = [
-        'component_category_id', 'user_id', 'vendor_id',
-        'title', 'vendor_code', 'quantity', 'price', 'cost', 'active', 'created_at', 'updated_at'
-    ];
+    protected $fillable = ['component_category_id', 'user_id', 'vendor_id', 'title', 'vendor_code', 'quantity', 'price', 'cost'];
 
     /**
      * @return BelongsTo
