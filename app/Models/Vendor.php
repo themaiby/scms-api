@@ -42,7 +42,7 @@ use Illuminate\Support\Carbon;
 class Vendor extends Model
 {
     protected $table = 'vendors';
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
 
     /**
      * @return BelongsTo

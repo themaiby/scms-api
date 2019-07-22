@@ -1,24 +1,24 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::prefix('auth')
+    ->middleware('api')
+    ->group(static function ($router) {
+        Route::post('login', 'AuthController@login');
+        Route::post('logout', 'AuthController@logout');
+        Route::post('refresh', 'AuthController@refresh');
+        Route::post('me', 'AuthController@me');
+    });
 
-Route::group(['prefix' => 'vendors'], static function () {
-    Route::get('/', 'VendorsController@getList');
-    Route::get('/{vendor}', 'VendorsController@get')->where(['vendor' => '[0-9]+']);
-    Route::post('/{vendor}', 'VendorsController@update')->where(['vendor' => '[0-9]+']);
-
-    Route::prefix('{vendor}/contacts')
-        ->where(['vendor' => '[0-9]+'])
-        ->group(static function () {
-            Route::post('/create', 'VendorContactController@create');
-        });
-});
+Route::prefix('vendors')
+    ->where(['vendor' => '[0-9]+'])
+    ->group(static function () {
+        Route::get('/', 'VendorsController@getList');
+        Route::post('/', 'VendorsController@create');
+        Route::get('/{vendor}', 'VendorsController@get');
+        Route::post('/{vendor}', 'VendorsController@update');
+        Route::delete('/{vendor}', 'VendorsController@delete');
+        Route::prefix('{vendor}/contacts')
+            ->group(static function () {
+                Route::post('/create', 'VendorContactController@create');
+            });
+    });

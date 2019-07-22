@@ -6,10 +6,12 @@ use App\Http\Requests\VendorCreateRequest;
 use App\Http\Requests\VendorUpdateRequest;
 use App\Http\Resources\CollectionResponse;
 use App\Http\Resources\ItemResponse;
-use App\Http\Resources\VendorResource;
 use App\Models\Vendor;
 use App\Services\VendorService;
+use Auth;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
 
 class VendorsController extends Controller
 {
@@ -54,11 +56,18 @@ class VendorsController extends Controller
     /**
      * @param VendorCreateRequest $vendorRequest
      * @return ItemResponse
+     * @throws AuthenticationException
      */
     public function create(VendorCreateRequest $vendorRequest): ItemResponse
     {
-        $vendor = Vendor::create($vendorRequest->all());
-        return new ItemResponse($vendor);
+        $user = Auth::user();
+
+        if ($user) {
+            $vendor = $user->vendors()->create($vendorRequest->all());
+            return new ItemResponse($vendor);
+        }
+
+        throw new AuthenticationException();
     }
 
     /**
@@ -74,12 +83,12 @@ class VendorsController extends Controller
 
     /**
      * @param Vendor $vendor
-     * @return ItemResponse
+     * @return JsonResponse
      * @throws Exception
      */
-    public function delete(Vendor $vendor): ItemResponse
+    public function delete(Vendor $vendor): JsonResponse
     {
         $vendor->delete();
-        return response();
+        return response()->json(['message' => 'Success']);
     }
 }
