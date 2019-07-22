@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             ComponentCategoriesSeeder::class,
             PermissionSeeder::class,
             AdministratorSeeder::class,
+            ExchangeRatesSeeder::class,
         ]);
     }
 }
