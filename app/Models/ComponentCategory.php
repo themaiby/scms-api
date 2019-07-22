@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -54,11 +53,19 @@ class ComponentCategory extends Model
     }
 
     /**
-     * @return HasOne
+     * @return HasMany
      *
      */
-    public function child(): HasOne
+    public function child(): HasMany
     {
-        return $this->hasOne(__CLASS__, 'parent_id');
+        return $this->hasMany(__CLASS__, 'parent_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function allChild(): HasMany
+    {
+        return $this->child()->with('allChild');
     }
 }
