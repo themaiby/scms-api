@@ -89,4 +89,14 @@ final class PermissionType extends Enum
 
     /** Reports */
     public const EXPORT_DATA = 'export data';
+
+    /**
+     * Returns permission name for middleware
+     * @param string $permission
+     * @return string
+     */
+    public static function getPermission(string $permission): string
+    {
+        return 'permission:' . $permission;
+    }
 }

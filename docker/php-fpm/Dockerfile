@@ -11,4 +11,5 @@ RUN apt-get update && apt-get install -y \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php && mv composer.phar /usr/local/bin/composer \
     && php -r "unlink('composer-setup.php');" \
+    && composer global require hirak/prestissimo \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
