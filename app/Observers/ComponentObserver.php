@@ -65,7 +65,7 @@ class ComponentObserver
      */
     public function restored(Component $component): void
     {
-        //
+        $this->deleted($component);
     }
 
     /**
@@ -76,6 +76,6 @@ class ComponentObserver
      */
     public function forceDeleted(Component $component): void
     {
-        //
+        $this->deleted($component);
     }
 }

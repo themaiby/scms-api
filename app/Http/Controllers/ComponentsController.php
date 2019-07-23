@@ -9,6 +9,8 @@ use App\Http\Resources\ItemResponse;
 use App\Models\Component;
 use App\Services\ComponentService;
 use App\Services\PaginationService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class ComponentsController extends Controller
 {
@@ -57,5 +59,16 @@ class ComponentsController extends Controller
     {
         $component = $this->componentService->updateComponent($component, $request);
         return new ItemResponse($component->refresh()->load(['vendor']));
+    }
+
+    /**
+     * @param Component $component
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function delete(Component $component): JsonResponse
+    {
+        $component->delete();
+        return response()->json(['message' => 'Success']);
     }
 }
