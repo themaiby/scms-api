@@ -3,6 +3,10 @@
 use App\Enums\PermissionType;
 
 Route::prefix('v1')->group(static function () {
+
+    /**
+     * Authentication
+     */
     Route::prefix('auth')
         ->middleware('api')
         ->group(static function () {
@@ -16,6 +20,9 @@ Route::prefix('v1')->group(static function () {
                 ->name('auth.me');
         });
 
+    /**
+     * Vendors
+     */
     Route::prefix('vendors')
         ->where(['vendor' => '[0-9]+'])
         ->group(static function () {
@@ -35,6 +42,9 @@ Route::prefix('v1')->group(static function () {
                 ->name('vendors.delete')
                 ->middleware(permissionMiddleware(PermissionType::DELETE_VENDORS()));
 
+            /**
+             * Vendor contacts
+             */
             Route::prefix('{vendor}/contacts')
                 ->group(static function () {
                     Route::post('/create', 'VendorContactsController@create')
@@ -46,6 +56,9 @@ Route::prefix('v1')->group(static function () {
                 });
         });
 
+    /**
+     * Components
+     */
     Route::prefix('components')
         ->where(['component' => '[0-9]+', 'componentCategory' => '[0-9]+'])
         ->group(static function () {
@@ -62,6 +75,9 @@ Route::prefix('v1')->group(static function () {
                 ->name('components.delete')
                 ->middleware(permissionMiddleware(PermissionType::DELETE_COMPONENTS()));
 
+            /**
+             * Component categories
+             */
             Route::prefix('categories')
                 ->group(static function () {
                     Route::get('/', 'ComponentCategoriesController@getList')
@@ -76,6 +92,9 @@ Route::prefix('v1')->group(static function () {
                 });
         });
 
+    /**
+     * Partners
+     */
     Route::prefix('partners')
         ->where(['partner' => '[0-9]+'])
         ->group(static function () {
@@ -95,6 +114,9 @@ Route::prefix('v1')->group(static function () {
                 ->name('partners.delete')
                 ->middleware(permissionMiddleware(PermissionType::DELETE_PARTNERS()));
 
+            /**
+             * Partner contacts
+             */
             Route::prefix('{partner}/contacts')
                 ->group(static function () {
                     Route::post('/create', 'PartnerContactsController@create')
@@ -106,11 +128,16 @@ Route::prefix('v1')->group(static function () {
                 });
         });
 
+    /**
+     * Orders
+     */
     Route::prefix('orders')
         ->where(['order' => '[0-9]+', 'orderStatus' => '[0-9]+'])
         ->group(static function () {
 
-
+            /**
+             * Order statuses
+             */
             Route::prefix('statuses')
                 ->group(static function () {
                     Route::post('/', 'OrderStatusesController@create')
@@ -119,6 +146,23 @@ Route::prefix('v1')->group(static function () {
                     Route::get('/', 'OrderStatusesController@getList')
                         ->name('order.statuses.list')
                         ->middleware(permissionMiddleware(PermissionType::SEE_ORDERS()));
+                });
+
+            /**
+             * Order types
+             */
+            Route::prefix('types')
+                ->where(['type' => '[0-9]+'])
+                ->group(static function () {
+                    Route::get('/', 'OrderTypesController@getList')
+                        ->name('orders.types.list')
+                        ->middleware(permissionMiddleware(PermissionType::SEE_ORDERS()));
+                    Route::post('/', 'OrderTypesController@create')
+                        ->name('orders.types.create')
+                        ->middleware(permissionMiddleware(PermissionType::CREATE_ORDERS()));
+                    Route::put('/{type}', 'OrderTypesController@update')
+                        ->name('orders.types.update')
+                        ->middleware(permissionMiddleware(PermissionType::EDIT_ORDERS()));
                 });
         });
 });

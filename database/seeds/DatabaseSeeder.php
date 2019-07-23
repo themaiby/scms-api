@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             AdministratorSeeder::class,
             ExchangeRatesSeeder::class,
             OrderStatusTypesSeeder::class,
+            OrderTypesSeeder::class,
         ]);
     }
 }
