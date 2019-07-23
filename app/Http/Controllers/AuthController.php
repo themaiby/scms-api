@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\ItemResponse;
+use Auth;
+use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -40,11 +44,20 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return JsonResponse
+     * @return ItemResponse
+     * @throws Exception
      */
-    public function me(): JsonResponse
+    public function me(): ItemResponse
     {
-        return response()->json(auth()->user());
+        $user = Auth::user();
+        if ($user) {
+            $res = array_merge($user->toArray(), [
+                'permissions' => $user->getAllPermissions()
+            ]);
+            return new ItemResponse($res);
+        }
+
+        throw new AuthenticationException();
     }
 
     /**

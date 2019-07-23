@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\RoleType;
 use Eloquent;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,10 +49,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static Builder|User permission($permissions)
  * @method static Builder|User role($roles, $guard = null)
  * @property-read Collection|Vendor[] $vendors
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Component[] $components
+ * @property-read Collection|Component[] $components
  * @property string $currency
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCurrency($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Partner[] $partners
+ * @method static Builder|User whereCurrency($value)
+ * @property-read Collection|Partner[] $partners
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -120,5 +122,25 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    /**
+     * Return all the permissions the model has, both directly and via roles.
+     *
+     * @throws Exception
+     */
+    public function getAllPermissions(): \Illuminate\Support\Collection
+    {
+        if ($this->hasRole(RoleType::ADMINISTRATOR)) {
+            return Permission::all()->sort()->values();
+        }
+
+        $permissions = $this->permissions;
+
+        if ($this->roles) {
+            $permissions = $permissions->merge($this->getPermissionsViaRoles());
+        }
+
+        return $permissions->sort()->values();
     }
 }
