@@ -75,5 +75,51 @@ Route::prefix('v1')->group(static function () {
                         ->middleware(permissionMiddleware(PermissionType::EDIT_COMPONENT_CATEGORIES()));
                 });
         });
+
+    Route::prefix('partners')
+        ->where(['partner' => '[0-9]+'])
+        ->group(static function () {
+            Route::get('/', 'PartnersController@getList')
+                ->name('partners.list')
+                ->middleware(permissionMiddleware(PermissionType::SEE_PARTNERS()));
+            Route::post('/', 'PartnersController@create')
+                ->name('partners.create')
+                ->middleware(permissionMiddleware(PermissionType::CREATE_PARTNERS()));
+            Route::get('/{partner}', 'PartnersController@get')
+                ->name('partners.get')
+                ->middleware(permissionMiddleware(PermissionType::SEE_PARTNERS()));
+            Route::put('/{partner}', 'PartnersController@update')
+                ->name('partners.update')
+                ->middleware(permissionMiddleware(PermissionType::EDIT_PARTNERS()));
+            Route::delete('/{partner}', 'PartnersController@delete')
+                ->name('partners.delete')
+                ->middleware(permissionMiddleware(PermissionType::DELETE_PARTNERS()));
+
+            Route::prefix('{partner}/contacts')
+                ->group(static function () {
+                    Route::post('/create', 'PartnerContactsController@create')
+                        ->name('partners.contacts.create')
+                        ->middleware(permissionMiddleware(PermissionType::CREATE_PARTNERS()));
+                    Route::delete('/{contact}', 'PartnerContactsController@delete')
+                        ->name('partners.contacts.delete')
+                        ->middleware(permissionMiddleware(PermissionType::DELETE_PARTNERS()));
+                });
+        });
+
+    Route::prefix('orders')
+        ->where(['order' => '[0-9]+', 'orderStatus' => '[0-9]+'])
+        ->group(static function () {
+
+
+            Route::prefix('statuses')
+                ->group(static function () {
+                    Route::post('/', 'OrderStatusesController@create')
+                        ->name('orders.statuses.create')
+                        ->middleware(permissionMiddleware(PermissionType::CREATE_ORDERS()));
+                    Route::get('/', 'OrderStatusesController@getList')
+                        ->name('order.statuses.list')
+                        ->middleware(permissionMiddleware(PermissionType::SEE_ORDERS()));
+                });
+        });
 });
 

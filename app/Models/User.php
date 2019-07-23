@@ -48,6 +48,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static Builder|User role($roles, $guard = null)
  * @property-read Collection|Vendor[] $vendors
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Component[] $components
+ * @property string $currency
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCurrency($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Partner[] $partners
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -89,6 +92,14 @@ class User extends Authenticatable implements JWTSubject
     public function components(): HasMany
     {
         return $this->hasMany(Component::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function partners(): HasMany
+    {
+        return $this->hasMany(Partner::class);
     }
 
     /**

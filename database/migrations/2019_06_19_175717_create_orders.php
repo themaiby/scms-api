@@ -21,7 +21,7 @@ class CreateOrders extends Migration
             $table->string('color')->default('primary');
             $table->string('description')->nullable();
 
-            $table->enum('type', OrderStatusType::getValues());
+            $table->enum('type', OrderStatusType::getValues())->default(OrderStatusType::NORMAL);
 
             $table->boolean('active')->default(true);
             $table->timestamps();
@@ -40,8 +40,9 @@ class CreateOrders extends Migration
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('order_status_id')->index();
-            $table->unsignedBigInteger('order_type_id')->index();
+            $table->unsignedBigInteger('status_id')->index();
+            $table->unsignedBigInteger('type_id')->index();
+            $table->unsignedBigInteger('partner_id')->index()->nullable();
 
             $table->string('client_name');
             $table->string('client_number');
@@ -63,25 +64,13 @@ class CreateOrders extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->foreign('order_status_id')
+            $table->foreign('status_id')
                 ->references('id')
                 ->on('order_statuses')
                 ->onDelete('cascade');
-            $table->foreign('order_type_id')
+            $table->foreign('type_id')
                 ->references('id')
                 ->on('order_types')
-                ->onDelete('cascade');
-        });
-
-        Schema::create('order_partners', static function (Blueprint $table) {
-            $table->unsignedBigInteger('order_id')->index();
-            $table->unsignedBigInteger('partner_id')->index();
-        });
-
-        Schema::table('order_partners', static function (Blueprint $table) {
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('orders')
                 ->onDelete('cascade');
             $table->foreign('partner_id')
                 ->references('id')

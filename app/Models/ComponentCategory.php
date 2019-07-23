@@ -30,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\ComponentCategory $child
  * @property-read \App\Models\ComponentCategory|null $parent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ComponentCategory whereParentId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ComponentCategory[] $oneChild
  */
 class ComponentCategory extends Model
 {

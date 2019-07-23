@@ -45,7 +45,6 @@ class VendorsController extends Controller
     public function get(Vendor $vendor): ItemResponse
     {
         $vendor->load([
-            'user',
             'components',
             'components.category',
             'contacts'
@@ -78,7 +77,7 @@ class VendorsController extends Controller
     public function update(Vendor $vendor, VendorUpdateRequest $request): ItemResponse
     {
         $vendor->update($request->all());
-        return $this->get($vendor);
+        return $this->get($vendor->refresh());
     }
 
     /**
