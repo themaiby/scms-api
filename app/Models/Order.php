@@ -52,6 +52,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Order wherePartnerId($value)
  * @method static Builder|Order whereStatusId($value)
  * @method static Builder|Order whereTypeId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderComponent[] $components
+ * @property-read \App\Models\Partner|null $partner
+ * @property-read \App\Models\OrderStatus $status
+ * @property-read \App\Models\OrderType $type
+ * @property-read \App\Models\User $user
  */
 class Order extends Model
 {

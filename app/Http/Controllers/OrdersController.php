@@ -76,7 +76,7 @@ class OrdersController extends Controller
     public function update(Order $order, OrderUpdateRequest $request): ItemResponse
     {
         $order->update($request->all());
-        return $this->get($order);
+        return $this->get($order->refresh());
     }
 
     /**

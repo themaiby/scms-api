@@ -134,7 +134,6 @@ Route::prefix('v1')->group(static function () {
     Route::prefix('orders')
         ->where(['order' => '[0-9]+', 'orderStatus' => '[0-9]+', 'type' => '[0-9]+'])
         ->group(static function () {
-
             Route::get('/', 'OrdersController@getList')
                 ->name('orders.list')
                 ->middleware(permissionMiddleware(PermissionType::SEE_ORDERS()));

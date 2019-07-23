@@ -53,6 +53,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $currency
  * @method static Builder|User whereCurrency($value)
  * @property-read Collection|Partner[] $partners
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  */
 class User extends Authenticatable implements JWTSubject
 {
