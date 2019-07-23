@@ -132,7 +132,13 @@ Route::prefix('v1')->group(static function () {
      * Orders
      */
     Route::prefix('orders')
-        ->where(['order' => '[0-9]+', 'orderStatus' => '[0-9]+', 'type' => '[0-9]+'])
+        ->where(
+            [
+                'order' => '[0-9]+',
+                'orderStatus' => '[0-9]+',
+                'type' => '[0-9]+',
+                'orderComponent' => '[0-9]+',
+            ])
         ->group(static function () {
             Route::get('/', 'OrdersController@getList')
                 ->name('orders.list')
@@ -177,6 +183,19 @@ Route::prefix('v1')->group(static function () {
                     Route::put('/{type}', 'OrderTypesController@update')
                         ->name('orders.types.update')
                         ->middleware(permissionMiddleware(PermissionType::EDIT_ORDERS()));
+                });
+
+            Route::prefix('{order}/components')
+                ->group(static function () {
+                    Route::post('/', 'OrderComponentsController@create')
+                        ->name('orders.components.create')
+                        ->middleware(permissionMiddleware(PermissionType::CREATE_ORDERS()));
+                    Route::put('/{orderComponent}', 'OrderComponentsController@update')
+                        ->name('orders.components.update')
+                        ->middleware(permissionMiddleware(PermissionType::EDIT_ORDERS()));
+                    Route::delete('/{orderComponent}', 'OrderComponentsController@delete')
+                        ->name('orders.components.delete')
+                        ->middleware(permissionMiddleware(PermissionType::DELETE_ORDERS()));
                 });
         });
 });

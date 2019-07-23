@@ -6,25 +6,16 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OrderComponentCreateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'quantity' => 'required|numeric|min:1',
+            'component_id' => 'required|exists:components,id'
         ];
     }
 }

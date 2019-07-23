@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\OrderComponent
@@ -12,24 +15,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $order_id
  * @property int $component_id
  * @property int $quantity
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Order $order
- * @property-read \App\Models\Component $sourceComponent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent whereComponentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent whereOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderComponent whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Order $order
+ * @property-read Component $sourceComponent
+ * @method static Builder|OrderComponent newModelQuery()
+ * @method static Builder|OrderComponent newQuery()
+ * @method static Builder|OrderComponent query()
+ * @method static Builder|OrderComponent whereComponentId($value)
+ * @method static Builder|OrderComponent whereCreatedAt($value)
+ * @method static Builder|OrderComponent whereId($value)
+ * @method static Builder|OrderComponent whereOrderId($value)
+ * @method static Builder|OrderComponent whereQuantity($value)
+ * @method static Builder|OrderComponent whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class OrderComponent extends Model
 {
     protected $table = 'order_components';
+    protected $fillable = ['component_id', 'quantity'];
 
     /**
      * @return BelongsTo
@@ -44,6 +48,6 @@ class OrderComponent extends Model
      */
     public function sourceComponent(): BelongsTo
     {
-        return $this->belongsTo(Component::class);
+        return $this->belongsTo(Component::class, 'component_id');
     }
 }
