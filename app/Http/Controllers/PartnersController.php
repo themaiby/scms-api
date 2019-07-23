@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PartnerContactCreateRequest;
+use App\Http\Requests\PartnerCreateRequest;
 use App\Http\Requests\PartnerUpdateRequest;
 use App\Http\Resources\CollectionResponse;
 use App\Http\Resources\ItemResponse;
 use App\Models\Partner;
 use App\Services\PaginationService;
-use Auth;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Auth;
 
 class PartnersController extends Controller
 {
@@ -33,11 +33,11 @@ class PartnersController extends Controller
     }
 
     /**
-     * @param PartnerContactCreateRequest $request
+     * @param PartnerCreateRequest $request
      * @return ItemResponse
      * @throws AuthenticationException
      */
-    public function create(PartnerContactCreateRequest $request): ItemResponse
+    public function create(PartnerCreateRequest $request): ItemResponse
     {
         $user = Auth::user();
 
@@ -57,7 +57,7 @@ class PartnersController extends Controller
     public function update(Partner $partner, PartnerUpdateRequest $request): ItemResponse
     {
         $partner->update($request->all());
-        return $this->get($partner->refresh());
+        return $this->get($partner);
     }
 
     /**

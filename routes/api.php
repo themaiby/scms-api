@@ -132,8 +132,24 @@ Route::prefix('v1')->group(static function () {
      * Orders
      */
     Route::prefix('orders')
-        ->where(['order' => '[0-9]+', 'orderStatus' => '[0-9]+'])
+        ->where(['order' => '[0-9]+', 'orderStatus' => '[0-9]+', 'type' => '[0-9]+'])
         ->group(static function () {
+
+            Route::get('/', 'OrdersController@getList')
+                ->name('orders.list')
+                ->middleware(permissionMiddleware(PermissionType::SEE_ORDERS()));
+            Route::get('/{order}', 'OrdersController@get')
+                ->name('orders.get')
+                ->middleware(permissionMiddleware(PermissionType::SEE_ORDERS()));
+            Route::post('/', 'OrdersController@create')
+                ->name('orders.create')
+                ->middleware(permissionMiddleware(PermissionType::CREATE_ORDERS()));
+            Route::put('/{order}', 'OrdersController@update')
+                ->name('orders.update')
+                ->middleware(permissionMiddleware(PermissionType::EDIT_ORDERS()));
+            Route::delete('/{order}', 'OrdersController@delete')
+                ->name('orders.delete')
+                ->middleware(permissionMiddleware(PermissionType::DELETE_ORDERS()));
 
             /**
              * Order statuses
@@ -152,7 +168,6 @@ Route::prefix('v1')->group(static function () {
              * Order types
              */
             Route::prefix('types')
-                ->where(['type' => '[0-9]+'])
                 ->group(static function () {
                     Route::get('/', 'OrderTypesController@getList')
                         ->name('orders.types.list')

@@ -77,7 +77,7 @@ class VendorsController extends Controller
     public function update(Vendor $vendor, VendorUpdateRequest $request): ItemResponse
     {
         $vendor->update($request->all());
-        return $this->get($vendor->refresh());
+        return $this->get($vendor);
     }
 
     /**

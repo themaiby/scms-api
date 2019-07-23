@@ -5,6 +5,8 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -47,11 +49,57 @@ use Illuminate\Support\Carbon;
  * @property int $status_id
  * @property int $type_id
  * @property int|null $partner_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order wherePartnerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereTypeId($value)
+ * @method static Builder|Order wherePartnerId($value)
+ * @method static Builder|Order whereStatusId($value)
+ * @method static Builder|Order whereTypeId($value)
  */
 class Order extends Model
 {
     protected $table = 'orders';
+    protected $fillable = [
+        'status_id', 'type_id', 'partner_id',
+        'client_name', 'client_number', 'client_description',
+        'device_name', 'device_code', 'device_description',
+        'order_reason', 'finish_date'
+    ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function components(): HasMany
+    {
+        return $this->hasMany(OrderComponent::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(OrderStatus::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(OrderType::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function partner(): BelongsTo
+    {
+        return $this->belongsTo(Partner::class);
+    }
 }

@@ -13,8 +13,8 @@ class OrderTypesSeeder extends Seeder
     public function run()
     {
         OrderType::insert([
-            ['title' => __('orders.types.paid'), 'color' => 'primary'],
-            ['title' => __('orders.types.warranty'), 'color' => 'secondary'],
+            ['title' => __('orders.types.paid'), 'color' => 'primary', 'created_at' => now(), 'updated_at' => now()],
+            ['title' => __('orders.types.warranty'), 'color' => 'secondary', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }
