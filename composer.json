@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.1.3",
         "ext-json": "*",
+        "barryvdh/laravel-cors": "^0.11.3",
         "bensampo/laravel-enum": "1.21.*",
         "caouecs/laravel-lang": "~4.0",
         "doctrine/dbal": "2.9.*",

@@ -13,3 +13,9 @@ trim_trailing_whitespace = false
 
 [*.yml]
 indent_size = 2
+
+[*.{js, ts, vue, less, html}]
+indent_size = 2
+
+[{package.json, .travis.yml}]
+indent_size = 2
