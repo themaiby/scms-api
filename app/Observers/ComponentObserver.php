@@ -27,6 +27,7 @@ class ComponentObserver
     {
         Component::unsetEventDispatcher();
         $this->componentService->calculateComponentCost($component);
+        $this->componentService->calculateVendorSummaryData($component);
     }
 
     /**

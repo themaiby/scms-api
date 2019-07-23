@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ComponentCreateRequest;
+use App\Http\Requests\ComponentUpdateRequest;
 use App\Http\Resources\CollectionResponse;
 use App\Http\Resources\ItemResponse;
 use App\Models\Component;
+use App\Services\ComponentService;
 use App\Services\PaginationService;
-use Auth;
 
 class ComponentsController extends Controller
 {
@@ -16,9 +17,15 @@ class ComponentsController extends Controller
      */
     private $paginationService;
 
-    public function __construct(PaginationService $pagination)
+    /**
+     * @var ComponentService
+     */
+    private $componentService;
+
+    public function __construct(PaginationService $pagination, ComponentService $componentService)
     {
         $this->paginationService = $pagination;
+        $this->componentService = $componentService;
     }
 
     /**
@@ -37,8 +44,18 @@ class ComponentsController extends Controller
      */
     public function create(ComponentCreateRequest $request): ItemResponse
     {
-        $data = array_merge(['user_id' => Auth::id()], $request->all());
-        $component = Component::create($data);
+        $component = $this->componentService->createComponent($request);
         return new ItemResponse($component->refresh());
+    }
+
+    /**
+     * @param Component $component
+     * @param ComponentUpdateRequest $request
+     * @return ItemResponse
+     */
+    public function update(Component $component, ComponentUpdateRequest $request): ItemResponse
+    {
+        $component = $this->componentService->updateComponent($component, $request);
+        return new ItemResponse($component->refresh()->load(['vendor']));
     }
 }

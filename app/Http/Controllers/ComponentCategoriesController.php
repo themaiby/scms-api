@@ -28,7 +28,7 @@ class ComponentCategoriesController extends Controller
     public function create(ComponentCategoryCreateRequest $request): ItemResponse
     {
         $parent = ComponentCategory::find($request->get(ComponentCategoryCreateRequest::FIELD_PARENT_ID));
-        $category = $parent->child()->create($request->all());
+        $category = $parent->oneChild()->create($request->all());
         return new ItemResponse($category);
     }
 
@@ -38,7 +38,10 @@ class ComponentCategoriesController extends Controller
     public function getList(): CollectionResponse
     {
         $perPage = $this->paginationService->getPerPage();
-        $list = ComponentCategory::paginate($perPage);
+        $list = ComponentCategory::with(['child'])
+            ->where('parent_id', null)
+            ->paginate($perPage);
+
         return new CollectionResponse($list);
     }
 

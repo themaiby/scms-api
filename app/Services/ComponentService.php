@@ -2,8 +2,14 @@
 
 namespace App\Services;
 
+use App\Enums\CurrencyType;
+use App\Http\Requests\ComponentCreateRequest;
+use App\Http\Requests\ComponentUpdateRequest;
 use App\Models\Component;
+use App\Models\ExchangeRate;
 use App\Models\Vendor;
+use Auth;
+use Illuminate\Http\Request;
 
 class ComponentService
 {
@@ -19,7 +25,6 @@ class ComponentService
 
     /**
      * Calculating vendor summary data based on given component
-     * todo: test
      * @param Component $component
      * @return Component
      */
@@ -44,6 +49,63 @@ class ComponentService
             ]);
         }
 
-        return $component->load('vendor');
+        return $component;
+    }
+
+    /**
+     * @param ComponentCreateRequest $request
+     * @return Component
+     */
+    public function createComponent(ComponentCreateRequest $request): Component
+    {
+        $data = array_merge(
+            $request->all(),
+            [
+                'user_id' => Auth::id(),
+                'price' => $this->getConvertedPrice($request)
+            ]
+        );
+
+        return Component::create($data);
+    }
+
+    /**
+     * @param Component $component
+     * @param ComponentUpdateRequest $request
+     * @return Component
+     */
+    public function updateComponent(Component $component, ComponentUpdateRequest $request): Component
+    {
+        $data = $request->only([
+            ComponentUpdateRequest::FIELD_COMPONENT_CATEGORY_ID,
+            ComponentUpdateRequest::FIELD_VENDOR_ID,
+            ComponentUpdateRequest::FIELD_TITLE,
+            ComponentUpdateRequest::FIELD_VENDOR_CODE,
+            ComponentUpdateRequest::FIELD_QUANTITY,
+            ComponentUpdateRequest::FIELD_PRICE,
+        ]);
+        $dataWithExchange = array_merge($data, ['price' => $this->getConvertedPrice($request)]);
+        $component->update($dataWithExchange);
+
+        return $component->load(['vendor']);
+    }
+
+    /**
+     * @param Request $request
+     * @return float
+     */
+    private function getConvertedPrice(Request $request): float
+    {
+        $currency = $request->get('currency');
+        $price = $request->get('price');
+
+        if ($currency && $price) {
+            return ExchangeRate::convertToBase(
+                CurrencyType::getInstances()[$currency],
+                $price
+            );
+        }
+
+        return 0;
     }
 }

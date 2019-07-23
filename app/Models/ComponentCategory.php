@@ -56,7 +56,7 @@ class ComponentCategory extends Model
      * @return HasMany
      *
      */
-    public function child(): HasMany
+    public function oneChild(): HasMany
     {
         return $this->hasMany(__CLASS__, 'parent_id');
     }
@@ -64,8 +64,8 @@ class ComponentCategory extends Model
     /**
      * @return HasMany
      */
-    public function allChild(): HasMany
+    public function child(): HasMany
     {
-        return $this->child()->with('allChild');
+        return $this->oneChild()->with('child');
     }
 }

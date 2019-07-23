@@ -54,6 +54,12 @@ Route::prefix('components')
         Route::post('/', 'ComponentsController@create')
             ->name('components.create')
             ->middleware(permissionMiddleware(PermissionType::CREATE_COMPONENTS()));
+        Route::post('/{component}', 'ComponentsController@update')
+            ->name('components.update')
+            ->middleware(permissionMiddleware(PermissionType::EDIT_COMPONENTS()));
+        Route::delete('/{component}', 'ComponentsController@delete')
+            ->name('components.delete')
+            ->middleware(permissionMiddleware(PermissionType::DELETE_COMPONENTS()));
 
         Route::prefix('categories')
             ->group(static function () {
