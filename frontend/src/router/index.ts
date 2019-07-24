@@ -1,15 +1,12 @@
 import Vue from "vue";
-import Router, { Route } from "vue-router";
+import Router from "vue-router";
 import ApplicationLayout from "@/pages/Layout/ApplicationLayout/ApplicationLayout.vue";
 import Login from "@/pages/Auth/Login/Login.vue";
-import {
-  middlewarePipeline,
-  TMiddleware,
-  TNextFunction
-} from "@/router/middleware/middlewarePipeline";
-import { isAuthorized } from "@/router/middleware/is-authorized";
-import { isNotAuthorized } from "@/router/middleware/is-not-authorized";
-import { initialization } from "@/router/middleware/initialization";
+import { Authorized } from "@/router/middleware/authorized";
+import { Guest } from "@/router/middleware/guest";
+import HomePage from "@/pages/HomePage/HomePage.vue";
+import { MiddlewarePipeline } from "@/router/middleware/middlewarePipeline";
+import VendorsList from "@/pages/Vendors/VendorsList/VendorsList.vue";
 
 Vue.use(Router);
 
@@ -22,40 +19,38 @@ export const router = new Router({
       name: "login",
       component: Login,
       meta: {
-        title: "pageName.login",
-        middleware: [isNotAuthorized]
+        title: "login",
+        middleware: [Guest]
       }
     },
     {
       path: "/",
-      name: "layout",
       component: ApplicationLayout,
+      name: "layout",
       meta: {
-        middleware: [isAuthorized]
-      }
+        middleware: [Authorized]
+      },
+      children: [
+        {
+          path: "/dashboard",
+          name: "main",
+          component: HomePage,
+          meta: { title: "main" }
+        },
+        {
+          path: "/vendors",
+          name: "vendors.list",
+          component: VendorsList,
+          meta: { title: "vendors" }
+        },
+        { path: "/components", name: "components.list", component: HomePage },
+        { path: "/orders", name: "orders.list", component: HomePage },
+        { path: "/partners", name: "partners.list", component: HomePage },
+        { path: "/settings", name: "settings", component: HomePage },
+        { path: "/profile", name: "profile", component: HomePage }
+      ]
     }
   ]
 });
 
-/**
- * Middleware pipeline register
- */
-router.beforeEach((to: Route, from: Route, next: TNextFunction) => {
-  if (!to.meta.middleware) {
-    return next();
-  }
-
-  /**
-   * Initial state middleware
-   */
-  const middleware: TMiddleware[] = to.meta.middleware
-    ? [initialization, ...to.meta.middleware]
-    : [initialization];
-
-  const context = { to, from, next };
-
-  return middleware[0]({
-    ...context,
-    next: middlewarePipeline(context, middleware, 1)
-  });
-});
+new MiddlewarePipeline().register();

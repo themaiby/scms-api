@@ -8,6 +8,7 @@ export const initialization = async ({ next }: IMiddleware) => {
   if (!ApplicationModule.isLoaded) {
     await checkAuthorization();
   }
+
   ApplicationModule.setLoaded(true);
   return next();
 };

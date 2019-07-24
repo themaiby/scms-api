@@ -1,9 +1,9 @@
 import { IMiddleware } from "@/router/middleware/middlewarePipeline";
 import { UserModule } from "@/store/modules/user-module";
 
-export const isNotAuthorized = ({ next }: IMiddleware) => {
+export const Guest = ({ next }: IMiddleware) => {
   if (UserModule.authenticated) {
-    return next({ name: "layout" });
+    return next({ name: "main" });
   }
 
   return next();

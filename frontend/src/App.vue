@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <VContainer fill-height justify-center v-if="!applicationLoaded">
+    <VContainer fill-height justify-center v-if="!applicationLoaded" wrap>
       <VProgressCircular indeterminate />
     </VContainer>
 
