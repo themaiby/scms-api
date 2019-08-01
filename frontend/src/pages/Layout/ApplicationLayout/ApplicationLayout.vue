@@ -1,7 +1,7 @@
 <template>
   <VContainer fluid>
     <VContent fluid>
-      <VToolbar app color="primary" dark>
+      <VAppBar app color="primary" dark>
         <VToolbarTitle> SCMS </VToolbarTitle>
         <VDivider class="mx-3" inset vertical />
         <span class="subheading">{{ $t($route.meta.title) }}</span>
@@ -9,15 +9,15 @@
         <v-spacer></v-spacer>
 
         <VToolbarItems>
-          <template v-for="link in links">
-            <VDivider vertical />
-            <VBtn :to="{ name: link.name }" flat>
+          <template v-for="(link, idx) in links">
+            <VDivider vertical :key="'divider-' + idx" />
+            <VBtn :key="'button-' + idx" :to="{ name: link.name }" text style="text-transform: none">
               <VIcon v-if="link.icon">{{ link.icon }}</VIcon>
               <span v-else>{{ $t(link.title) }}</span>
             </VBtn>
           </template>
         </VToolbarItems>
-      </VToolbar>
+      </VAppBar>
       <router-view></router-view>
     </VContent>
   </VContainer>

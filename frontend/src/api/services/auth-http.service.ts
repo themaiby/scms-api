@@ -8,7 +8,6 @@ export class AuthHttpService {
   }
 
   public static async refreshToken(): Promise<IAuthData> {
-    console.log("REFRESHING");
     return (await api.post("/auth/refresh")).data;
   }
 

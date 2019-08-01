@@ -6,11 +6,11 @@ import Vue from "vue";
 import App from "./App.vue";
 
 // Plugins
-import "@/plugins/vuetify";
 import "@/plugins/vee-validate";
 import { i18n } from "@/plugins/i18n";
 import { router } from "@/router";
 import { store } from "@/store";
+import { vuetify } from "@/plugins/vuetify";
 
 Vue.config.productionTip = false;
 
@@ -18,5 +18,6 @@ new Vue({
   router,
   store,
   i18n,
+  vuetify,
   render: h => h(App)
 }).$mount("#app");

@@ -10,14 +10,15 @@ class User extends VuexModule {
   public refreshStatus: RefreshStatusEnum = RefreshStatusEnum.unknown;
   public user: IUser = {
     active: true,
-    created_at: "",
     currency: CurrencyEnum.USD,
     email: "",
     first_name: "",
     id: 0,
     last_name: "",
+    updated_at: "",
+    created_at: "",
     permissions: [],
-    updated_at: ""
+    partners: []
   };
 
   @Mutation

@@ -1,14 +1,16 @@
 import { CurrencyEnum } from "@/Interfaces/CurrencyEnum";
 import { IPermission } from "@/Interfaces/IPermission";
+import { IPartner } from "@/Interfaces/IPartner";
+import { ITimestampable } from "@/Interfaces/ITimestampable";
 
-export interface IUser {
+export interface IUser extends ITimestampable {
   id: number;
   first_name: string;
   last_name: string;
   email: string;
   active: boolean;
   currency: CurrencyEnum;
-  created_at: string;
-  updated_at: string;
+
+  partners: IPartner[];
   permissions: IPermission[];
 }

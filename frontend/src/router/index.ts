@@ -7,6 +7,7 @@ import { Guest } from "@/router/middleware/guest";
 import HomePage from "@/pages/HomePage/HomePage.vue";
 import { MiddlewarePipeline } from "@/router/middleware/middlewarePipeline";
 import VendorsList from "@/pages/Vendors/VendorsList/VendorsList.vue";
+import PartnerList from "@/pages/Partners/PartnerList/PartnerList.vue";
 
 Vue.use(Router);
 
@@ -43,9 +44,14 @@ export const router = new Router({
           component: VendorsList,
           meta: { title: "vendors" }
         },
+        {
+          path: "/partners",
+          name: "partners.list",
+          component: PartnerList,
+          meta: { title: "partners" }
+        },
         { path: "/components", name: "components.list", component: HomePage },
         { path: "/orders", name: "orders.list", component: HomePage },
-        { path: "/partners", name: "partners.list", component: HomePage },
         { path: "/settings", name: "settings", component: HomePage },
         { path: "/profile", name: "profile", component: HomePage }
       ]
