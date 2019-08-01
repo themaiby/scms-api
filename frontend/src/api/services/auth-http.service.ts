@@ -7,7 +7,8 @@ export class AuthHttpService {
     return (await api.post("/auth/login", { email, password })).data;
   }
 
-  public static async refresToken(): Promise<IAuthData> {
+  public static async refreshToken(): Promise<IAuthData> {
+    console.log("REFRESHING");
     return (await api.post("/auth/refresh")).data;
   }
 

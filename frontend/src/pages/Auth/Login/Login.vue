@@ -9,28 +9,30 @@
           <VCardText>
             <!-- Email -->
             <VTextField
+              solo
               v-model="email"
+              name="email"
               v-validate="'required|email'"
               data-vv-validate-on="blur"
-              name="email"
               data-vv-name="email"
               :data-vv-as="$t('field.email')"
-              :label="$t('field.email')"
               :error-messages="errors.collect('email')"
+              :label="$t('field.email')"
               :disabled="isRequest"
               @keydown.enter.native="loginAttempt"
             />
 
             <!-- Password -->
             <VTextField
+              solo
               v-model="password"
+              name="password"
               v-validate="'required'"
               data-vv-validate-on="blur"
-              name="password"
               data-vv-name="password"
               :data-vv-as="$t('field.password')"
-              :label="$t('field.password')"
               :error-messages="errors.collect('password')"
+              :label="$t('field.password')"
               :disabled="isRequest"
               @keydown.enter.native="loginAttempt"
               type="password"
@@ -69,15 +71,13 @@ export default class Login extends Vue {
   public isRequest = false;
   public error = "";
 
-  private async loginAttempt() {
+  public async loginAttempt() {
     const validated = await this.$validator.validateAll();
     if (validated) {
+      this.isRequest = true;
+      this.error = "";
       try {
-        this.isRequest = true;
-        this.error = "";
-
         const loginData = await AuthHttpService.login(this.email, this.password);
-
         persistToken(loginData.access_token);
         UserModule.setAuthenticated(true);
         this.$router.push({ name: "layout" });
@@ -88,8 +88,6 @@ export default class Login extends Vue {
       }
     }
   }
-
-  private login() {}
 
   private clear() {
     this.$validator.reset();

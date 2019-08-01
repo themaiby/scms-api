@@ -2,10 +2,12 @@ import { getModule, Module, Mutation, VuexModule } from "vuex-module-decorators"
 import { store } from "@/store";
 import { IUser } from "@/Interfaces/IUser";
 import { CurrencyEnum } from "@/Interfaces/CurrencyEnum";
+import { RefreshStatusEnum } from "@/store/modules/user-module/interfaces";
 
 @Module({ dynamic: true, store: store, name: "user" })
 class User extends VuexModule {
   public authenticated = false;
+  public refreshStatus: RefreshStatusEnum = RefreshStatusEnum.unknown;
   public user: IUser = {
     active: true,
     created_at: "",
@@ -26,6 +28,11 @@ class User extends VuexModule {
   @Mutation
   setUser(user: IUser) {
     this.user = user;
+  }
+
+  @Mutation
+  setRefreshStatus(status: RefreshStatusEnum) {
+    this.refreshStatus = status;
   }
 }
 

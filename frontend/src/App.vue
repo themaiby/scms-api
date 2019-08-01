@@ -1,10 +1,10 @@
 <template>
-  <v-app>
+  <v-app class="accent lighten-1">
     <VContainer fill-height justify-center v-if="!applicationLoaded" wrap>
       <VProgressCircular indeterminate />
     </VContainer>
 
-    <router-view v-else />
+    <router-view />
   </v-app>
 </template>
 

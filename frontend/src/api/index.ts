@@ -1,12 +1,8 @@
 import axios from "axios";
 import { interceptors } from "@/api/interceptors";
-import { getToken } from "@/utils/auth.utils";
 
 export const api = axios.create({
-  baseURL: process.env.VUE_APP_BASE_URL,
-  headers: {
-    Authorization: `Bearer ${getToken()}`
-  }
+  baseURL: process.env.VUE_APP_BASE_URL
 });
 
 api.interceptors.request.use(interceptors.request.onSuccess, interceptors.request.onError);

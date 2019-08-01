@@ -1,5 +1,5 @@
 <template>
-  <VDataTable class="elevation-24" :items="[1, 2, 3]" :loading="true"/>
+  <VDataTable class="elevation-24" :items="[1, 2, 3]" :loading="true" />
 </template>
 
 <script lang="ts">

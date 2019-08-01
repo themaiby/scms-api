@@ -1,23 +1,26 @@
-import { AxiosResponse } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { getToken, refreshToken } from "@/utils/auth.utils";
 
-const handleRequestSuccess = (config: object) => {
+const handleRequestSuccess = (config: AxiosRequestConfig) => {
+  config.headers.Authorization = `Bearer ${getToken()}`;
   return config;
 };
 
-const handleResponseSuccess = (response: AxiosResponse) => {
-  const status = response.status;
+const handleResponseSuccess = async (response: AxiosResponse) => {
+  return response;
+};
+
+const handleError = async (error: any) => {
+  const status = error.response.status;
   switch (status) {
     case 401:
-      // todo: login?
+      const refreshed = await refreshToken();
       break;
     case 500:
       // todo: notification
       break;
   }
-  return response;
-};
 
-const handleError = (error: any) => {
   return Promise.reject(error);
 };
 

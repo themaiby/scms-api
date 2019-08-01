@@ -1,28 +1,26 @@
 <template>
-  <div>
-    <VToolbar app color="yellow lighten-5">
-      <VToolbarTitle> SCMS </VToolbarTitle>
-      <VDivider class="mx-3" inset vertical />
-      <span class="subheading">{{ $t($route.meta.title) }}</span>
+  <VContainer fluid>
+    <VContent fluid>
+      <VToolbar app color="primary" dark>
+        <VToolbarTitle> SCMS </VToolbarTitle>
+        <VDivider class="mx-3" inset vertical />
+        <span class="subheading">{{ $t($route.meta.title) }}</span>
 
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
-      <VToolbarItems>
-        <template v-for="link in links">
-          <VDivider vertical />
-          <VBtn :to="{ name: link.name }" flat>
-            <VIcon v-if="link.icon">{{ link.icon }}</VIcon>
-            <span v-else>{{ $t(link.title) }}</span>
-          </VBtn>
-        </template>
-      </VToolbarItems>
-    </VToolbar>
-    <VContent>
-      <VContainer fluid>
-        <router-view></router-view>
-      </VContainer>
+        <VToolbarItems>
+          <template v-for="link in links">
+            <VDivider vertical />
+            <VBtn :to="{ name: link.name }" flat>
+              <VIcon v-if="link.icon">{{ link.icon }}</VIcon>
+              <span v-else>{{ $t(link.title) }}</span>
+            </VBtn>
+          </template>
+        </VToolbarItems>
+      </VToolbar>
+      <router-view></router-view>
     </VContent>
-  </div>
+  </VContainer>
 </template>
 
 <script lang="ts">
@@ -59,4 +57,8 @@ export default class ApplicationLayout extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-full {
+  height: 100%;
+}
+</style>

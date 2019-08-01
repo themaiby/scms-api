@@ -11,7 +11,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
-        "baseUrl": ".",
+        "baseUrl": "./",
         "types": ["webpack-env"],
         "paths": {
             "@/*": ["src/*"]
@@ -25,5 +25,7 @@
         "tests/**/*.ts",
         "tests/**/*.tsx"
     ],
-    "exclude": ["node_modules"]
+    "exclude": [
+        "node_modules"
+    ]
 }
