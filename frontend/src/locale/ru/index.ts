@@ -16,5 +16,7 @@ export const ru = {
   settings: "Параметры",
   profile: "Профиль",
   login: "Вход",
-  perPage: "На странице"
+  perPage: "На странице",
+  exportAll: "Экспор: Всё",
+  exportFilter: "Экспорт: По Фильтру"
 };

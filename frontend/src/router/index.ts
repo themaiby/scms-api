@@ -55,7 +55,8 @@ export const router = new Router({
         { path: "/settings", name: "settings", component: HomePage },
         { path: "/profile", name: "profile", component: HomePage }
       ]
-    }
+    },
+    { path: "**", name: "not-found", redirect: { name: "main" } }
   ]
 });
 

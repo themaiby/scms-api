@@ -2,21 +2,37 @@
   <div>
     <VDataTable
       hide-default-footer
+      show-select
       class="elevation-24"
       height="80vh"
+      v-model="selectedPartners"
       :fixed-header="true"
       :headers="headers"
       :items="partners"
       :loading="loading"
-      :page="meta.current_page"
       :items-per-page="meta.per_page"
+      :sortBy.sync="sort.field"
+      :sort-desc.sync="sort.descending"
+      :server-items-length="pagesCount"
+      @update:options="onOptionsChange"
     >
       <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title>My CRUD</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-        </v-toolbar>
+        <VToolbar flat color="white">
+          <VToolbarTitle>My CRUD</VToolbarTitle>
+          <VDivider class="mx-4" inset vertical />
+          <VBtn small tile icon color="green"><VIcon>mdi-file-excel</VIcon></VBtn>
+          <VSpacer />
+
+          <VBtn small tile color="primary" icon>
+            <VIcon>mdi-plus</VIcon>
+          </VBtn>
+          <VBtn small tile color="teal" icon>
+            <VIcon>mdi-filter-outline</VIcon>
+          </VBtn>
+          <VBtn v-if="selectedPartners.length" small tile color="error" icon>
+            <VIcon>mdi-delete</VIcon>
+          </VBtn>
+        </VToolbar>
       </template>
     </VDataTable>
 
@@ -25,8 +41,8 @@
         <VFlex xs12 md6 lg6 pt-4>
           <VMenu open-on-hover top offset-y>
             <template v-slot:activator="{ on }">
-              <VBtn color="primary" dark v-on="on" class="text-left" :disabled="loading">
-                {{ $t("perPage") }}
+              <VBtn color="primary" v-on="on" class="text-left" :disabled="loading">
+                {{ $t("perPage") }}: {{ meta.per_page }}
               </VBtn>
             </template>
 
@@ -46,9 +62,9 @@
           <VPagination
             class="ml-0 mr-0 justify-end"
             :value="meta.current_page"
-            @input="changePage"
             :length="pagesCount"
             :disabled="loading"
+            @input="changePage"
           />
         </VFlex>
       </VLayout>
@@ -60,17 +76,29 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { PartnersHttpService } from "@/api/services/partners-http.service";
 
+/** Utils */
+import { getPerPageFor, setPerPageFor } from "@/utils/pagination.utils";
+
 /** Interfaces */
 import { IPartner } from "@/Interfaces/IPartner";
 import { ITableHeader } from "@/Interfaces/ITableHeader";
 import { IMeta } from "@/api/interfaces";
-import { getPerPageFor } from "@/utils/pagination.utils";
+import { ISort } from "@/Interfaces/ISort";
+import { ITableOptions } from "@/Interfaces/ITableOptions";
+
+const perPageIdentifier = "partnerList";
 
 @Component
 export default class PartnerList extends Vue {
   public loading: boolean = false;
   public partners: IPartner[] = [];
-  public perPageVariants = [10, 25, 30, 50, 100];
+  public selectedPartners: IPartner[] = [];
+  public perPageVariants = [25, 50, 100, 200];
+
+  public sort: ISort = {
+    field: "id",
+    descending: false
+  };
 
   public meta: IMeta = {
     current_page: 1,
@@ -79,8 +107,9 @@ export default class PartnerList extends Vue {
     total: 1,
     path: "",
     last_page: 1,
-    per_page: getPerPageFor("partnerList")
+    per_page: getPerPageFor(perPageIdentifier)
   };
+
   public headers: ITableHeader[] = [
     { text: "#", value: "id" },
     { text: "name", value: "name" },
@@ -89,38 +118,59 @@ export default class PartnerList extends Vue {
   ];
 
   public get pagesCount() {
-    return Math.round(this.meta.total / this.meta.per_page);
+    return Math.ceil(this.meta.total / this.meta.per_page);
   }
 
+  /**
+   * Handle page changing
+   */
   public changePage(page: number) {
     this.meta.current_page = page;
-    this.getPartnersList();
+    this.getPartnerList();
   }
 
+  /**
+   * Handle per page value changing
+   * @param perPage
+   */
   public changePerPage(perPage: number) {
     this.meta.per_page = perPage;
-    this.getPartnersList();
+    setPerPageFor(perPageIdentifier, perPage);
+    this.getPartnerList();
   }
 
-  public async getPartnersList() {
+  /**
+   * Calls after mounting
+   * @param options
+   */
+  public onOptionsChange(options: ITableOptions) {
+    this.sort.field = options.sortBy[0];
+    this.sort.descending = options.sortDesc[0];
+    this.getPartnerList();
+  }
+
+  /**
+   * Request builder
+   */
+  public async getPartnerList() {
     try {
       this.loading = true;
-      const partnersRes = await PartnersHttpService.getList({
+      const requestData = {
         perPage: this.meta.per_page,
-        page: this.meta.current_page
-      });
+        page: this.meta.current_page,
+        sortBy: this.sort.field,
+        order: this.sort.descending ? "desc" : "asc"
+      };
+
+      const partnersRes = await PartnersHttpService.getList(requestData);
 
       this.meta = partnersRes.meta;
       this.partners = partnersRes.result;
     } catch (e) {
-      // todo: error handling
+      // todo: error handling. Notifications?
     } finally {
       this.loading = false;
     }
-  }
-
-  public mounted() {
-    this.getPartnersList();
   }
 }
 </script>
