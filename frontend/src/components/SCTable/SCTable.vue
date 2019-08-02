@@ -7,6 +7,8 @@
       class="elevation-24"
       height="80vh"
       v-model="selected"
+      :expanded="expanded"
+      :show-expand="expandable"
       :headers="headers"
       :items="items"
       :loading="loading"
@@ -15,9 +17,16 @@
       :sort-desc.sync="descending_local"
       :server-items-length="1"
       @update:options="$emit('update:options', $event)"
+      @item-expanded="$emit('item-expanded', $event)"
     >
       <template v-slot:top>
-        <slot />
+        <slot name="header" />
+      </template>
+
+      <template v-slot:expanded-item="{ item }">
+        <td :colspan="headers.length + 2" class="expanded-row pt-1 pb-1">
+          <slot name="expand" v-bind:item="item" />
+        </td>
       </template>
     </VDataTable>
   </div>
@@ -36,10 +45,12 @@ export default class SCTable extends Vue {
   @Prop({ default: 1 }) readonly perPage!: number;
   @Prop({ default: "id" }) readonly sortBy!: string;
   @Prop({ default: false }) readonly descending!: boolean;
+  @Prop({ default: false }) readonly expandable!: boolean;
 
   public sortBy_local = this.sortBy;
   public descending_local = this.descending;
   public selected: [] = [];
+  public expanded: [] = [];
 
   @Watch("selected")
   @Emit("update:selected")
@@ -49,4 +60,8 @@ export default class SCTable extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.expanded-row {
+  padding: 0;
+}
+</style>

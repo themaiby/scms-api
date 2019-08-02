@@ -8,6 +8,7 @@ export const ru = {
     login: "Вход",
     clear: "Очистить"
   },
+  contacts: "Контакты",
   main: "Главная страница",
   orders: "Заявки",
   vendors: "Поставщики",
@@ -17,6 +18,13 @@ export const ru = {
   profile: "Профиль",
   login: "Вход",
   perPage: "На странице",
-  exportAll: "Всё",
-  exportFilter: "По Фильтру"
+  export: "Экспорт",
+  exportAll: "Все данные",
+  exportFilter: "С учётом фильтра",
+  "#": "№",
+  "no-data": "Нет данных",
+  name: "Имя",
+  description: "Описание",
+  created_at: "Дата",
+  updated_at: ""
 };

@@ -1,13 +1,26 @@
 <template>
   <div>
     <SCTable
+      expandable
       :headers="headers"
       :items="partners"
       :loading="loading"
       @update:options="onOptionsChange"
       @update:selected="selectedPartners = $event"
     >
-      <SCTableHeader :show-delete-button="selectedPartners.length" />
+      <template v-slot:header>
+        <SCTableHeader
+          :show-delete-button="selectedPartners.length"
+          @click:add="1"
+          @click:filter="1"
+          @click:delete="1"
+          @click:refresh="getPartnerList"
+        />
+      </template>
+
+      <template v-slot:expand="{ item }">
+        <PartnerCard :partner="item" />
+      </template>
     </SCTable>
 
     <VContainer>
@@ -26,19 +39,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { PartnersHttpService } from "@/api/services/partners-http.service";
-/** Utils */
-import { getPerPageFor, setPerPageFor } from "@/utils/pagination.utils";
+import { Component, Vue } from "vue-property-decorator";
+import { getPerPageFor } from "@/utils/pagination.utils";
+
 /** Interfaces */
 import { IPartner } from "@/Interfaces/IPartner";
 import { ITableHeader } from "@/Interfaces/ITableHeader";
 import { IMeta } from "@/api/interfaces";
 import { ISort } from "@/Interfaces/ISort";
 import { ITableOptions } from "@/Interfaces/ITableOptions";
+
+/** Components */
 import SCTable from "@/components/SCTable/SCTable.vue";
 import SCTableHeader from "@/components/SCTableHeader/SCTableHeader.vue";
+import PartnerCard from "@/pages/Partners/PartnerList/PartnerCard/PartnerCard.vue";
 import SCTablePagination from "@/components/SCTablePagination/SCTablePagination.vue";
+
+import { PartnersHttpService } from "@/api/services/partners-http.service";
+import { getTranslatedHeaders } from "@/utils/table.utils";
 
 const perPageIdentifier = "partnerList";
 
@@ -47,13 +65,14 @@ const perPageIdentifier = "partnerList";
   components: {
     SCTablePagination,
     SCTable,
-    SCTableHeader
+    SCTableHeader,
+    PartnerCard
   }
 })
 export default class PartnerList extends Vue {
   public loading: boolean = false;
   public partners: IPartner[] = [];
-  public selectedPartners: IPartner[] = [];
+  public selectedPartners: IPartner[] = []; // todo: batch deleting
   public perPageVariants = [25, 50, 100, 200];
 
   public sort: ISort = {
@@ -71,12 +90,12 @@ export default class PartnerList extends Vue {
     per_page: getPerPageFor(perPageIdentifier)
   };
 
-  public headers: ITableHeader[] = [
+  public headers: ITableHeader[] = getTranslatedHeaders([
     { text: "#", value: "id" },
     { text: "name", value: "name" },
     { text: "description", value: "description" },
     { text: "created_at", value: "created_at" }
-  ];
+  ]);
 
   public get pagesCount() {
     return Math.ceil(this.meta.total / this.meta.per_page);
@@ -105,7 +124,6 @@ export default class PartnerList extends Vue {
    * @param options
    */
   public onOptionsChange(options: ITableOptions) {
-    console.log(options);
     this.sort.field = options.sortBy[0];
     this.sort.descending = options.sortDesc[0];
     this.getPartnerList();

@@ -1,22 +1,24 @@
 <template>
   <VToolbar flat color="white">
-    <VToolbarTitle>{{ title }}</VToolbarTitle>
+    <VBtn icon @click="$emit('click:refresh')">
+      <VIcon>mdi-refresh</VIcon>
+    </VBtn>
     <VDivider class="mx-4" inset vertical />
-    <v-menu offset-y>
+    <VMenu offset-y open-on-hover>
       <template v-slot:activator="{ on }">
-        <VBtn small tile icon color="green" v-on="on">
-          <VIcon>mdi-file-excel</VIcon>
+        <VBtn small tile color="primary" v-on="on">
+          {{ $t('export') }}
         </VBtn>
       </template>
       <VList>
-        <VListItem @click="">
-          <v-list-item-title>{{ $t('exportAll') }}</v-list-item-title>
+        <VListItem @click="$emit('click:export:all')">
+          <v-list-item-title>{{ $t("exportAll") }}</v-list-item-title>
         </VListItem>
-        <VListItem @click="">
-          <v-list-item-title>{{ $t('exportFilter') }}</v-list-item-title>
+        <VListItem @click="$emit('click:export:filter')">
+          <v-list-item-title>{{ $t("exportFilter") }}</v-list-item-title>
         </VListItem>
       </VList>
-    </v-menu>
+    </VMenu>
     <VSpacer />
 
     <VBtn small tile color="primary" icon @click="$emit('click:add')">
@@ -36,7 +38,6 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({ name: "SCTableHeader" })
 export default class SCTableHeader extends Vue {
-  @Prop({ default: "" }) title!: string;
   @Prop({ default: false }) showDeleteButton!: boolean;
 }
 </script>
