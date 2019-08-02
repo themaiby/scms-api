@@ -40,7 +40,7 @@ class CreatePartners extends Migration
         Schema::table('partner_contacts', static function (Blueprint $table) {
             $table->foreign('partner_id')
                 ->references('id')
-                ->on('vendors')
+                ->on('partners')
                 ->onDelete('cascade');
         });
     }

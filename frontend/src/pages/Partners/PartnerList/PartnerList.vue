@@ -1,5 +1,7 @@
 <template>
   <div>
+    <PartnerCreate v-model="isPartnerCreateOpen" @created="onPartnerCreated" />
+
     <SCTable
       expandable
       :headers="headers"
@@ -11,7 +13,7 @@
       <template v-slot:header>
         <SCTableHeader
           :show-delete-button="selectedPartners.length"
-          @click:add="1"
+          @click:add="isPartnerCreateOpen = true"
           @click:filter="1"
           @click:delete="1"
           @click:refresh="getPartnerList"
@@ -57,12 +59,14 @@ import SCTablePagination from "@/components/SCTablePagination/SCTablePagination.
 
 import { PartnersHttpService } from "@/api/services/partners-http.service";
 import { getTranslatedHeaders } from "@/utils/table.utils";
+import PartnerCreate from "@/pages/Partners/PartnerCreate/PartnerCreate.vue";
 
 const perPageIdentifier = "partnerList";
 
 @Component({
   name: "PartnerList",
   components: {
+    PartnerCreate,
     SCTablePagination,
     SCTable,
     SCTableHeader,
@@ -74,6 +78,7 @@ export default class PartnerList extends Vue {
   public partners: IPartner[] = [];
   public selectedPartners: IPartner[] = []; // todo: batch deleting
   public perPageVariants = [25, 50, 100, 200];
+  public isPartnerCreateOpen = false;
 
   public sort: ISort = {
     field: "id",
@@ -99,6 +104,11 @@ export default class PartnerList extends Vue {
 
   public get pagesCount() {
     return Math.ceil(this.meta.total / this.meta.per_page);
+  }
+
+  public onPartnerCreated() {
+    this.isPartnerCreateOpen = false;
+    this.getPartnerList();
   }
 
   /**
@@ -143,7 +153,6 @@ export default class PartnerList extends Vue {
       };
 
       const partnersRes = await PartnersHttpService.getList(requestData);
-
       this.meta = partnersRes.meta;
       this.partners = partnersRes.result;
     } catch (e) {

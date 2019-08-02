@@ -26,5 +26,11 @@ export const ru = {
   name: "Имя",
   description: "Описание",
   created_at: "Дата",
-  updated_at: ""
+  updated_at: "",
+  newPartner: "Добавить партнёра",
+  addContact: "Добавить контакт",
+  contactTitle: "Название контакта",
+  contactValue: "Значение контакта",
+  submit: "Подтвердить",
+  cancel: "Отмена"
 };

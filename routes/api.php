@@ -42,7 +42,7 @@ Route::prefix('v1')->middleware('api')->group(static function () {
          * Vendor contacts
          */
         Route::prefix('{vendor}/contacts')->group(static function () {
-            Route::post('/create', 'VendorContactsController@create')
+            Route::post('/', 'VendorContactsController@create')
                 ->name('vendors.contacts.create')
                 ->middleware(permissionMiddleware(PermissionType::CREATE_VENDORS()));
             Route::delete('/{contact}', 'VendorContactsController@delete')
@@ -110,7 +110,7 @@ Route::prefix('v1')->middleware('api')->group(static function () {
          * Partner contacts
          */
         Route::prefix('{partner}/contacts')->group(static function () {
-            Route::post('/create', 'PartnerContactsController@create')
+            Route::post('/', 'PartnerContactsController@create')
                 ->name('partners.contacts.create')
                 ->middleware(permissionMiddleware(PermissionType::CREATE_PARTNERS()));
             Route::delete('/{contact}', 'PartnerContactsController@delete')
