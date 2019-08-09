@@ -4,7 +4,7 @@
       {{ $t("contacts") }}
     </VCardTitle>
 
-    <VProgressLinear v-if="!ready" indeterminate />
+    <VProgressLinear v-if="!ready" indeterminate height="2" />
     <VCardText v-else-if="loadedPartner.contacts.length">
       <VLayout row v-for="contact in loadedPartner.contacts" :key="contact.id" ml-5>
         <VFlex xs6>
