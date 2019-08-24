@@ -32,5 +32,6 @@ export const ru = {
   contactTitle: "Название контакта",
   contactValue: "Значение контакта",
   submit: "Подтвердить",
-  cancel: "Отмена"
+  cancel: "Отмена",
+  close: "Закрыть"
 };
