@@ -76,6 +76,7 @@ export default class Login extends Vue {
     if (validated) {
       this.isRequest = true;
       this.error = "";
+
       try {
         const loginData = await AuthHttpService.login(this.email, this.password);
         persistToken(loginData.access_token);

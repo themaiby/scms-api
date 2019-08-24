@@ -6,21 +6,17 @@
 
     <VProgressLinear v-if="!ready" indeterminate height="2" />
     <VCardText v-else-if="loadedPartner.contacts.length">
-      <VLayout row v-for="contact in loadedPartner.contacts" :key="contact.id" ml-5>
-        <VFlex xs6>
-          <VLayout row>
-            <VFlex xs3 shrink>
-              <b>{{ contact.title }}:</b>
-            </VFlex>
-            <VFlex xs3>
-              {{ contact.value }}
-            </VFlex>
-          </VLayout>
-        </VFlex>
-      </VLayout>
+      <VList dense v-for="contact in loadedPartner.contacts" :key="contact.id">
+        <VListItem @click="">
+          <VListItemContent>
+            <VListItemTitle v-text="contact.title" />
+            <VListItemSubtitle v-text="contact.value" />
+          </VListItemContent>
+        </VListItem>
+      </VList>
     </VCardText>
     <VCardText v-else>
-      {{ $t('no-data') }}
+      {{ $t("no-data") }}
     </VCardText>
   </VCard>
 </template>

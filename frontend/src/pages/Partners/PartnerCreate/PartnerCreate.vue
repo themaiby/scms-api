@@ -32,7 +32,7 @@
             </VFlex>
 
             <template v-for="(contact, idx) in contacts">
-              <VFlex xs6>
+              <VFlex xs6 :key="'contact-title-' + idx">
                 <VTextField
                   v-validate="'required'"
                   name="contactTitle"
@@ -44,7 +44,7 @@
                   v-model="contact.title"
                 />
               </VFlex>
-              <VFlex xs5>
+              <VFlex xs5 :key="'contact-value-' + idx">
                 <VTextField
                   v-validate="'required'"
                   name="contactValue"
@@ -56,7 +56,7 @@
                   v-model="contact.value"
                 />
               </VFlex>
-              <VFlex xs1>
+              <VFlex xs1 :key="'contact-remove-' + idx">
                 <VBtn icon tile @click="removeContactModel(idx)">
                   <VIcon>mdi-delete</VIcon>
                 </VBtn>
@@ -70,7 +70,7 @@
 
           <VCardActions>
             <VSpacer />
-            <VBtn v-if="!isReqeust" color="primary" outlined @click="cancel">
+            <VBtn v-if="!isRequest" color="primary" outlined @click="cancel">
               {{ $t("cancel") }}
             </VBtn>
             <VBtn color="primary" :loading="isRequest" @click="createPartner">

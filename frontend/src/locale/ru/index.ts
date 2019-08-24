@@ -20,7 +20,7 @@ export const ru = {
   perPage: "На странице",
   export: "Экспорт",
   exportAll: "Все данные",
-  exportFilter: "С учётом фильтра",
+  exportFilter: "С применением фильтра",
   "#": "№",
   "no-data": "Нет данных",
   name: "Имя",
