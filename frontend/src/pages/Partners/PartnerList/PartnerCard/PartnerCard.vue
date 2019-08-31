@@ -7,7 +7,7 @@
     <VProgressLinear v-if="!ready" indeterminate height="2" />
     <VCardText v-else-if="loadedPartner.contacts.length">
       <VList dense v-for="contact in loadedPartner.contacts" :key="contact.id">
-        <VListItem @click="">
+        <VListItem @click="toClipBoard(contact.value)">
           <VListItemContent>
             <VListItemTitle v-text="contact.title" />
             <VListItemSubtitle v-text="contact.value" />
@@ -23,8 +23,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { IPartner } from "@/Interfaces/IPartner";
+import { IPartner } from "@/interfaces/IPartner";
 import { PartnersHttpService } from "@/api/services/partners-http.service";
+import { Notify } from "@/utils/notify";
+import { toClipBoard } from "@/plugins/v-clipboard";
 
 @Component
 export default class PartnerCard extends Vue {
@@ -41,6 +43,11 @@ export default class PartnerCard extends Vue {
     updated_at: "",
     user_id: ""
   };
+
+  public toClipBoard(value: string) {
+    toClipBoard(value);
+    Notify.info(this.$t("copiedToClipboard") as string);
+  }
 
   public async mounted() {
     try {

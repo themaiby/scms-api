@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
-import { ITableHeader } from "@/Interfaces/ITableHeader";
+import { ITableHeader } from "@/interfaces/ITableHeader";
 
 @Component
 export default class SCTable extends Vue {

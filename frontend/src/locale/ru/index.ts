@@ -33,5 +33,7 @@ export const ru = {
   contactValue: "Значение контакта",
   submit: "Подтвердить",
   cancel: "Отмена",
-  close: "Закрыть"
+  close: "Закрыть",
+  createdPartner: 'Партнёр "{name}" успешно добавлен',
+  copiedToClipboard: "Значение скопировано в буфер обмена"
 };

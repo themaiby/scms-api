@@ -1,4 +1,4 @@
-import { ITimestampable } from "@/Interfaces/ITimestampable";
+import { ITimestampable } from "@/interfaces/ITimestampable";
 
 export interface IContact extends ITimestampable {
   id: number;

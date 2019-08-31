@@ -1,6 +1,6 @@
 import { api } from "@/api";
-import { IAuthData } from "@/Interfaces/IAuthData";
-import { IUser } from "@/Interfaces/IUser";
+import { IAuthData } from "@/interfaces/IAuthData";
+import { IUser } from "@/interfaces/IUser";
 
 export class AuthHttpService {
   public static async login(email: string, password: string): Promise<IAuthData> {

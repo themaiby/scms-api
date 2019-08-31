@@ -89,6 +89,7 @@ import { filter as _filter, forEach as _forEach } from "lodash";
 import { PartnersHttpService } from "@/api/services/partners-http.service";
 import { IPartnerCreateRequest } from "@/api/request/IPartnerCreateRequest";
 import { IContactCreateRequest } from "@/api/request/IContactCreateRequest";
+import { Notify } from "@/utils/notify";
 
 @Component
 export default class PartnerCreate extends Vue {
@@ -120,6 +121,8 @@ export default class PartnerCreate extends Vue {
       await Promise.all(
         _forEach(this.contacts, contact => PartnersHttpService.createContact(partner.id, contact))
       );
+
+      Notify.success(this.$t('createdPartner', {name: partner.name}) as string);
       this.$emit("created");
     } catch (e) {
       // todo: error handling

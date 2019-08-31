@@ -4,9 +4,9 @@ import "@babel/polyfill";
 
 import Vue from "vue";
 import App from "./App.vue";
-
 // Plugins
 import "@/plugins/vee-validate";
+import "@/plugins/v-clipboard";
 import { i18n } from "@/plugins/i18n";
 import { router } from "@/router";
 import { store } from "@/store";

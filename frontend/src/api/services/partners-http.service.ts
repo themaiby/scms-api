@@ -1,11 +1,11 @@
 import { api } from "@/api";
-import { IAuthData } from "@/Interfaces/IAuthData";
-import { IUser } from "@/Interfaces/IUser";
+import { IAuthData } from "@/interfaces/IAuthData";
+import { IUser } from "@/interfaces/IUser";
 import { IRequestPagination, IResponse, IResponseCollection } from "@/api/interfaces";
-import { IPartner } from "@/Interfaces/IPartner";
+import { IPartner } from "@/interfaces/IPartner";
 import { IPartnerCreateRequest } from "@/api/request/IPartnerCreateRequest";
 import { IContactCreateRequest } from "@/api/request/IContactCreateRequest";
-import { IContact } from "@/Interfaces/IContact";
+import { IContact } from "@/interfaces/IContact";
 
 export class PartnersHttpService {
   public static async getList(query?: IRequestPagination): Promise<IResponseCollection<IPartner>> {

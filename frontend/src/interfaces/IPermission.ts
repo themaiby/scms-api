@@ -1,4 +1,4 @@
-import { PermissionEnum } from "@/Interfaces/PermissionEnum";
+import { PermissionEnum } from "@/interfaces/PermissionEnum";
 
 export interface IPermission {
   id: number;

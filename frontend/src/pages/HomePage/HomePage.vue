@@ -7,12 +7,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { notification } from "@/utils/notification";
+import { Notify } from "@/utils/notify";
 
 @Component
 export default class HomePage extends Vue {
   public notify() {
-    notification("Test notification");
+    Notify.info("Jrcf");
   }
 }
 </script>

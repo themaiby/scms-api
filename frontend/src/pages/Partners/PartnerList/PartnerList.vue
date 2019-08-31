@@ -44,12 +44,12 @@
 import { Component, Vue } from "vue-property-decorator";
 import { getPerPageFor } from "@/utils/pagination.utils";
 
-/** Interfaces */
-import { IPartner } from "@/Interfaces/IPartner";
-import { ITableHeader } from "@/Interfaces/ITableHeader";
+/** interfaces */
+import { IPartner } from "@/interfaces/IPartner";
+import { ITableHeader } from "@/interfaces/ITableHeader";
 import { IMeta } from "@/api/interfaces";
-import { ISort } from "@/Interfaces/ISort";
-import { ITableOptions } from "@/Interfaces/ITableOptions";
+import { ISort } from "@/interfaces/ISort";
+import { ITableOptions } from "@/interfaces/ITableOptions";
 
 /** Components */
 import SCTable from "@/components/SCTable/SCTable.vue";
@@ -60,6 +60,7 @@ import SCTablePagination from "@/components/SCTablePagination/SCTablePagination.
 import { PartnersHttpService } from "@/api/services/partners-http.service";
 import { getTranslatedHeaders } from "@/utils/table.utils";
 import PartnerCreate from "@/pages/Partners/PartnerCreate/PartnerCreate.vue";
+import { Notify } from "@/utils/notify";
 
 const perPageIdentifier = "partnerList";
 
@@ -67,10 +68,10 @@ const perPageIdentifier = "partnerList";
   name: "PartnerList",
   components: {
     PartnerCreate,
+    PartnerCard,
     SCTablePagination,
     SCTable,
     SCTableHeader,
-    PartnerCard
   }
 })
 export default class PartnerList extends Vue {
