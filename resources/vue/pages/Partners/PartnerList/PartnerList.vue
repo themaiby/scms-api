@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <PartnerCreate v-model="isPartnerCreateOpen" @created="onPartnerCreated" />
 
@@ -42,25 +42,26 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { getPerPageFor } from "../../../utils/pagination.utils";
+import { getPerPageFor, perPageOptions } from "@/utils/pagination.utils";
 
 /** interfaces */
-import { IPartner } from "../../../interfaces/IPartner";
-import { ITableHeader } from "../../../interfaces/ITableHeader";
-import { IMeta } from "../../../api/interfaces";
-import { ISort } from "../../../interfaces/ISort";
-import { ITableOptions } from "../../../interfaces/ITableOptions";
+import { IPartner } from "@/interfaces/IPartner";
+import { ITableHeader } from "@/interfaces/ITableHeader";
+import { IMeta, IRequestPagination } from "@/api/interfaces";
+import { ISort } from "@/interfaces/ISort";
+import { ITableOptions } from "@/interfaces/ITableOptions";
 
 /** Components */
-import SCTable from "../../../components/SCTable/SCTable.vue";
-import SCTableHeader from "../../../components/SCTableHeader/SCTableHeader.vue";
+import SCTable from "@/components/SCTable/SCTable.vue";
+import SCTableHeader from "@/components/SCTableHeader/SCTableHeader.vue";
+import SCTablePagination from "@/components/SCTablePagination/SCTablePagination.vue";
 import PartnerCard from "./PartnerCard/PartnerCard.vue";
-import SCTablePagination from "../../../components/SCTablePagination/SCTablePagination.vue";
-
-import { PartnersHttpService } from "../../../api/services/partners-http.service";
-import { getTranslatedHeaders } from "../../../utils/table.utils";
 import PartnerCreate from "../PartnerCreate/PartnerCreate.vue";
-import { Notify } from "../../../utils/notify";
+
+/** Utils */
+import { PartnersHttpService } from "@/api/services/partners-http.service";
+import { Notify } from "@/utils/notify";
+import { getTranslatedHeaders } from "@/utils/table.utils";
 
 const perPageIdentifier = "partnerList";
 
@@ -78,14 +79,10 @@ export default class PartnerList extends Vue {
   public loading: boolean = false;
   public partners: IPartner[] = [];
   public selectedPartners: IPartner[] = []; // todo: batch deleting
-  public perPageVariants = [25, 50, 100, 200];
+  public perPageVariants = perPageOptions;
   public isPartnerCreateOpen = false;
 
-  public sort: ISort = {
-    field: "id",
-    descending: false
-  };
-
+  public sort: ISort = { field: "id", descending: true };
   public meta: IMeta = {
     current_page: 1,
     from: 1,
@@ -95,7 +92,6 @@ export default class PartnerList extends Vue {
     last_page: 1,
     per_page: getPerPageFor(perPageIdentifier)
   };
-
   public headers: ITableHeader[] = getTranslatedHeaders([
     { text: "#", value: "id" },
     { text: "name", value: "name" },
@@ -144,20 +140,21 @@ export default class PartnerList extends Vue {
    * Request builder
    */
   public async getPartnerList() {
+    console.log({...this.sort});
     try {
       this.loading = true;
-      const requestData = {
+      const requestData: IRequestPagination = {
         perPage: this.meta.per_page,
         page: this.meta.current_page,
-        sortBy: this.sort.field,
-        order: this.sort.descending ? "desc" : "asc"
+        sort: this.sort.field,
+        direction: this.sort.descending ? "desc" : "asc"
       };
 
       const partnersRes = await PartnersHttpService.getList(requestData);
       this.meta = partnersRes.meta;
       this.partners = partnersRes.result;
     } catch (e) {
-      // todo: error handling. Notifications?
+      Notify.error(e.data.message);
     } finally {
       this.loading = false;
     }

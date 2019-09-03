@@ -1,7 +1,7 @@
 import { getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { store } from "../../index";
-import { IUser } from "../../../interfaces/IUser";
-import { CurrencyEnum } from "../../../interfaces/CurrencyEnum";
+import { store } from "@/store";
+import { IUser } from "@/interfaces/IUser";
+import { CurrencyEnum } from "@/interfaces/CurrencyEnum";
 import { RefreshStatusEnum } from "./interfaces";
 
 @Module({ dynamic: true, store: store, name: "user" })

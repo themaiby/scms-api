@@ -29,7 +29,8 @@ class PartnersController extends Controller
     public function getList(): CollectionResponse
     {
         $perPage = $this->paginationService->getPerPage();
-        return new CollectionResponse(Partner::with(['contacts'])->paginate($perPage));
+        $partners = Partner::sortable()->with(['contacts'])->paginate($perPage);
+        return new CollectionResponse($partners);
     }
 
     /**

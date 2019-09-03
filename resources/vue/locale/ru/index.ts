@@ -35,5 +35,7 @@ export const ru = {
   cancel: "Отмена",
   close: "Закрыть",
   createdPartner: 'Партнёр "{name}" успешно добавлен',
-  copiedToClipboard: "Значение скопировано в буфер обмена"
+  copiedToClipboard: "Значение скопировано в буфер обмена",
+  components_count: "Товаров на складе",
+  components_cost: "Суммарная стоимость товаров"
 };

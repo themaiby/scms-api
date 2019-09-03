@@ -44,7 +44,7 @@ export default class SCTable extends Vue {
   @Prop({ default: 1 }) readonly pagesCount!: number;
   @Prop({ default: 1 }) readonly perPage!: number;
   @Prop({ default: "id" }) readonly sortBy!: string;
-  @Prop({ default: false }) readonly descending!: boolean;
+  @Prop({ default: true }) readonly descending!: boolean;
   @Prop({ default: false }) readonly expandable!: boolean;
 
   public sortBy_local = this.sortBy;

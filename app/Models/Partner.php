@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Kyslik\ColumnSortable\Sortable;
 
 /**
  * App\Models\Partner
@@ -32,11 +33,15 @@ use Illuminate\Support\Carbon;
  * @mixin Eloquent
  * @property-read Collection|PartnerContact[] $contacts
  * @property-read Collection|Order[] $orders
+ * @method static Builder|Partner sortable($defaultParameters = null)
  */
 class Partner extends Model
 {
+    use Sortable;
+
     protected $table = 'partners';
     protected $fillable = ['name', 'description'];
+    protected $sortable = ['id', 'name', 'description', 'created_at'];
 
     /**
      * @return HasMany

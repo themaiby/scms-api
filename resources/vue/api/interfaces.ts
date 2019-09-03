@@ -20,6 +20,6 @@ export interface IResponseCollection<T> {
 export interface IRequestPagination {
   page?: number;
   perPage?: number;
-  sortBy?: string;
-  order?: string;
+  sort?: string;
+  direction?: string;
 }

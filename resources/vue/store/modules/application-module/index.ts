@@ -1,6 +1,6 @@
 import { getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { store } from "../../index";
-import { ISnackbar } from "../../../interfaces/ISnackbar";
+import { store } from "@/store";
+import { ISnackbar } from "@/interfaces/ISnackbar";
 
 @Module({ dynamic: true, store: store, name: "app" })
 class Application extends VuexModule {
