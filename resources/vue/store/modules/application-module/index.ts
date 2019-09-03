@@ -6,6 +6,7 @@ import { ISnackbar } from "@/interfaces/ISnackbar";
 class Application extends VuexModule {
   public isLoaded: boolean = false;
   public snackbar: ISnackbar = { active: false, color: "blue", text: "", timeout: 2000 };
+  public dialog = {};
 
   @Mutation
   public setSnackbar(isActive: boolean) {

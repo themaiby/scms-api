@@ -37,5 +37,9 @@ export const ru = {
   createdPartner: 'Партнёр "{name}" успешно добавлен',
   copiedToClipboard: "Значение скопировано в буфер обмена",
   components_count: "Товаров на складе",
-  components_cost: "Суммарная стоимость товаров"
+  components_cost: "Суммарная стоимость товаров",
+  partnersDeleteConfirm:
+    "| Подтвердите удаление {count}- партнёра | Подтвердите удаление {count} партнёров",
+  partnersDeleteWarning: "Данные будут удалены БЕЗ возможности восстановлени",
+  confirm: "Подтвердить"
 };

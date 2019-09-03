@@ -18,8 +18,15 @@ export interface IResponseCollection<T> {
 }
 
 export interface IRequestPagination {
+  /** Page number */
   page?: number;
+
+  /** Items per page */
   perPage?: number;
+
+  /** Sort by field name */
   sort?: string;
+
+  /** Sort direction */
   direction?: string;
 }

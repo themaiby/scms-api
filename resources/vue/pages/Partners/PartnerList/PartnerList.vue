@@ -1,6 +1,13 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <PartnerCreate v-model="isPartnerCreateOpen" @created="onPartnerCreated" />
+    <SCDialog
+      :isOpen="isDeleteDialogOpen"
+      :title="deleteDialogTitle"
+      :text="deleteDialogText"
+      @confirm="onDeleteConfirm"
+      @cancel="onDeleteCancel"
+    />
 
     <SCTable
       expandable
@@ -15,7 +22,7 @@
           :show-delete-button="selectedPartners.length"
           @click:add="isPartnerCreateOpen = true"
           @click:filter="1"
-          @click:delete="1"
+          @click:delete="openDeleteDialog"
           @click:refresh="getPartnerList"
         />
       </template>
@@ -62,6 +69,7 @@ import PartnerCreate from "../PartnerCreate/PartnerCreate.vue";
 import { PartnersHttpService } from "@/api/services/partners-http.service";
 import { Notify } from "@/utils/notify";
 import { getTranslatedHeaders } from "@/utils/table.utils";
+import SCDialog from "@/components/SCDialog/SCDialog.vue";
 
 const perPageIdentifier = "partnerList";
 
@@ -73,6 +81,7 @@ const perPageIdentifier = "partnerList";
     SCTablePagination,
     SCTable,
     SCTableHeader,
+    SCDialog
   }
 })
 export default class PartnerList extends Vue {
@@ -81,6 +90,7 @@ export default class PartnerList extends Vue {
   public selectedPartners: IPartner[] = []; // todo: batch deleting
   public perPageVariants = perPageOptions;
   public isPartnerCreateOpen = false;
+  public isDeleteDialogOpen = false;
 
   public sort: ISort = { field: "id", descending: true };
   public meta: IMeta = {
@@ -101,6 +111,28 @@ export default class PartnerList extends Vue {
 
   public get pagesCount() {
     return Math.ceil(this.meta.total / this.meta.per_page);
+  }
+
+  /** TODO: Add deletable items?
+   */
+  public get deleteDialogTitle() {
+    return this.$tc("partnersDeleteConfirm", this.selectedPartners.length);
+  }
+
+  public get deleteDialogText() {
+    return this.$t("partnersDeleteWarning");
+  }
+
+  public openDeleteDialog() {
+    this.isDeleteDialogOpen = true;
+  }
+
+  public onDeleteConfirm() {
+    this.isDeleteDialogOpen = false;
+  }
+
+  public onDeleteCancel() {
+    this.isDeleteDialogOpen = false;
   }
 
   public onPartnerCreated() {
@@ -140,7 +172,7 @@ export default class PartnerList extends Vue {
    * Request builder
    */
   public async getPartnerList() {
-    console.log({...this.sort});
+    console.log({ ...this.sort });
     try {
       this.loading = true;
       const requestData: IRequestPagination = {
