@@ -1,6 +1,13 @@
 <template>
   <VCard>
     <VCardTitle>
+      {{ $t("description") }}
+    </VCardTitle>
+    <VCardText>
+      {{ partner.description }}
+    </VCardText>
+
+    <VCardTitle>
       {{ $t("contacts") }}
     </VCardTitle>
 
@@ -23,10 +30,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { IPartner } from "../../../../interfaces/IPartner";
-import { PartnersHttpService } from "../../../../api/services/partners-http.service";
-import { Notify } from "../../../../utils/notify";
-import { toClipBoard } from "../../../../plugins/v-clipboard";
+import { IPartner } from "@/interfaces/IPartner";
+import { PartnersHttpService } from "@/api/services/partners-http.service";
+import { Notify } from "@/utils/notify";
+import { toClipBoard } from "@/plugins/v-clipboard";
 
 @Component
 export default class PartnerCard extends Vue {

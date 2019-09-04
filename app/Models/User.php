@@ -13,7 +13,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -53,7 +52,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $currency
  * @method static Builder|User whereCurrency($value)
  * @property-read Collection|Partner[] $partners
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ * @property-read Collection|Order[] $orders
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -80,6 +79,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $casts = ['email_verified_at' => 'datetime'];
+
+    protected $appends = ['full_name'];
 
     /**
      * @return HasMany
@@ -151,5 +152,13 @@ class User extends Authenticatable implements JWTSubject
         }
 
         return $permissions->sort()->values();
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
     }
 }

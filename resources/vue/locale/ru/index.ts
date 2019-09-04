@@ -38,8 +38,9 @@ export const ru = {
   copiedToClipboard: "Значение скопировано в буфер обмена",
   components_count: "Товаров на складе",
   components_cost: "Суммарная стоимость товаров",
-  partnersDeleteConfirm:
-    "| Подтвердите удаление {count}- партнёра | Подтвердите удаление {count} партнёров",
-  partnersDeleteWarning: "Данные будут удалены БЕЗ возможности восстановлени",
-  confirm: "Подтвердить"
+  partnersDeleteConfirm: "| Подтвердите удаление партнёра | Подтвердите удаление {count} партнёров",
+  partnersDeleteWarning: "Данные будут удалены БЕЗ возможности восстановления",
+  partnersDeletedInfo: "| Партнёр удалён | {count} партнёра удалено | {count} партнёров удалены",
+  confirm: "Подтвердить",
+  addedBy: "Добавлено пользователем"
 };

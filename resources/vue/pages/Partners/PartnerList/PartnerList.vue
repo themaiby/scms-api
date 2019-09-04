@@ -1,11 +1,15 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
     <PartnerCreate v-model="isPartnerCreateOpen" @created="onPartnerCreated" />
+
+    <!--  todo: add removable items  -->
     <SCDialog
+      width="650"
+      :loading="loading"
       :isOpen="isDeleteDialogOpen"
       :title="deleteDialogTitle"
       :text="deleteDialogText"
-      @confirm="onDeleteConfirm"
+      @confirm="deletePartners"
       @cancel="onDeleteCancel"
     />
 
@@ -59,6 +63,7 @@ import { ISort } from "@/interfaces/ISort";
 import { ITableOptions } from "@/interfaces/ITableOptions";
 
 /** Components */
+import SCDialog from "@/components/SCDialog/SCDialog.vue";
 import SCTable from "@/components/SCTable/SCTable.vue";
 import SCTableHeader from "@/components/SCTableHeader/SCTableHeader.vue";
 import SCTablePagination from "@/components/SCTablePagination/SCTablePagination.vue";
@@ -69,7 +74,7 @@ import PartnerCreate from "../PartnerCreate/PartnerCreate.vue";
 import { PartnersHttpService } from "@/api/services/partners-http.service";
 import { Notify } from "@/utils/notify";
 import { getTranslatedHeaders } from "@/utils/table.utils";
-import SCDialog from "@/components/SCDialog/SCDialog.vue";
+import { forEach as _forEach } from "lodash";
 
 const perPageIdentifier = "partnerList";
 
@@ -87,7 +92,7 @@ const perPageIdentifier = "partnerList";
 export default class PartnerList extends Vue {
   public loading: boolean = false;
   public partners: IPartner[] = [];
-  public selectedPartners: IPartner[] = []; // todo: batch deleting
+  public selectedPartners: IPartner[] = [];
   public perPageVariants = perPageOptions;
   public isPartnerCreateOpen = false;
   public isDeleteDialogOpen = false;
@@ -105,7 +110,7 @@ export default class PartnerList extends Vue {
   public headers: ITableHeader[] = getTranslatedHeaders([
     { text: "#", value: "id" },
     { text: "name", value: "name" },
-    { text: "description", value: "description" },
+    { text: "addedBy", value: "user.full_name" }, // todo: route to user
     { text: "created_at", value: "created_at" }
   ]);
 
@@ -125,10 +130,6 @@ export default class PartnerList extends Vue {
 
   public openDeleteDialog() {
     this.isDeleteDialogOpen = true;
-  }
-
-  public onDeleteConfirm() {
-    this.isDeleteDialogOpen = false;
   }
 
   public onDeleteCancel() {
@@ -172,7 +173,6 @@ export default class PartnerList extends Vue {
    * Request builder
    */
   public async getPartnerList() {
-    console.log({ ...this.sort });
     try {
       this.loading = true;
       const requestData: IRequestPagination = {
@@ -189,6 +189,24 @@ export default class PartnerList extends Vue {
       Notify.error(e.data.message);
     } finally {
       this.loading = false;
+    }
+  }
+
+  public async deletePartners() {
+    this.loading = true;
+    const partnersCount = this.selectedPartners.length;
+
+    try {
+      await Promise.all(
+        _forEach(this.selectedPartners, partner => PartnersHttpService.delete(partner.id))
+      );
+      Notify.info(this.$tc("partnersDeletedInfo", partnersCount));
+    } catch (e) {
+      Notify.error(e.data.message);
+    } finally {
+      this.getPartnerList();
+      this.selectedPartners = [];
+      this.isDeleteDialogOpen = false;
     }
   }
 }

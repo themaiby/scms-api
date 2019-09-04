@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="SC-table">
     <VDataTable
       hide-default-footer
@@ -16,7 +16,7 @@
       :sortBy.sync="sortBy_local"
       :sort-desc.sync="descending_local"
       :server-items-length="1"
-      @update:options="$emit('update:options', $event)"
+      @update:options="updateOptions($event)"
       @item-expanded="$emit('item-expanded', $event)"
     >
       <template v-slot:top>
@@ -34,7 +34,8 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
-import { ITableHeader } from "../../interfaces/ITableHeader";
+import { ITableHeader } from "@/interfaces/ITableHeader";
+import { ITableOptions } from "@/interfaces/ITableOptions";
 
 @Component
 export default class SCTable extends Vue {
@@ -54,8 +55,18 @@ export default class SCTable extends Vue {
 
   @Watch("selected")
   @Emit("update:selected")
-  emitSelected(selected: []) {
+  private emitSelected(selected: []) {
     return selected;
+  }
+
+  @Watch("loading") resetSelection() {
+    this.selected = [];
+  }
+
+  @Emit("update:options")
+  private updateOptions(options: ITableOptions) {
+    this.selected = [];
+    return options;
   }
 }
 </script>

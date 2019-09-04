@@ -1,5 +1,5 @@
 <template>
-  <VDialog :value="isOpen" persistent max-width="800">
+  <VDialog persistent :max-width="width" :value="isOpen">
     <VCard>
       <VCardTitle class="headline">{{ title }}</VCardTitle>
       <VCardText>
@@ -7,8 +7,8 @@
       </VCardText>
       <VCardActions>
         <div class="flex-grow-1"></div>
-        <VBtn color="primary" outlined @click="cancel">{{ $t("cancel") }}</VBtn>
-        <VBtn color="primary" @click="confirm">{{ $t("confirm") }}</VBtn>
+        <VBtn v-if="!loading" outlined color="primary" @click="cancel">{{ $t("cancel") }}</VBtn>
+        <VBtn color="primary" :loading="loading" @click="confirm">{{ $t("confirm") }}</VBtn>
       </VCardActions>
     </VCard>
   </VDialog>
@@ -22,6 +22,8 @@ export default class SCDialog extends Vue {
   @Prop({ default: false }) readonly isOpen!: boolean;
   @Prop({ required: true }) readonly title!: string;
   @Prop({ required: true }) readonly text!: string;
+  @Prop({ default: 250 }) readonly width!: number;
+  @Prop({ default: false }) readonly loading!: boolean;
 
   @Emit("confirm")
   public confirm() {}

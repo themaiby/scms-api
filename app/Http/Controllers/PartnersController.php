@@ -9,6 +9,7 @@ use App\Http\Resources\ItemResponse;
 use App\Models\Partner;
 use App\Services\PaginationService;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class PartnersController extends Controller
@@ -29,7 +30,7 @@ class PartnersController extends Controller
     public function getList(): CollectionResponse
     {
         $perPage = $this->paginationService->getPerPage();
-        $partners = Partner::sortable()->with(['contacts'])->paginate($perPage);
+        $partners = Partner::sortable()->with(['contacts', 'user'])->paginate($perPage);
         return new CollectionResponse($partners);
     }
 
@@ -69,5 +70,11 @@ class PartnersController extends Controller
     {
         $partner->load(['contacts']);
         return new ItemResponse($partner);
+    }
+
+    public function delete(Partner $partner): JsonResponse
+    {
+        $partner->delete();
+        return response()->json(['message' => 'Success']);
     }
 }
