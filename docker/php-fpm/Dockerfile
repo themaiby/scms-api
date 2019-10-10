@@ -1,4 +1,4 @@
-FROM php:7.3.6-fpm
+FROM php:7.3.9-fpm
 
 WORKDIR /app
 
